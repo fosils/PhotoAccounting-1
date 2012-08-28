@@ -112,6 +112,7 @@ $files = getImagesInDir('images');
 		<div id="flash_errors"></div>
 		<div id="jsv_form">
 			<ul>
+				<li><div id="jsv_image_name"></div></li>
 				<li><label for="jsv_bilag">Bilag</label>
 					<div>
 						<input type="text" name="jsv_bilag" id="jsv_bilag" value="1"
