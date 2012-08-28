@@ -116,7 +116,7 @@ JSViewer = function () {
                         jsonObject = Y.JSON.parse(response.responseText);
                         image_details[imageID] = jsonObject;
                     } catch (e) {
-                        log("Failed to load image details")
+                        log("Failed to load image details");
                         log(e);
                         log(response);
                     }
