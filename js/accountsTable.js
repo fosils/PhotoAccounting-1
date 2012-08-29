@@ -6,7 +6,7 @@ YUI().use('datatable-scroll', "datasource-io", "datasource-jsonschema",
 			}, 'Name', 'VAT' ];
 
 			var dataSource = new Y.DataSource.IO({
-				source : "php/economic-ajax.php"
+				source : "php/proxy.php?function=get_accounts"
 			});
 
 			dataSource.plug(Y.Plugin.DataSourceJSONSchema, {

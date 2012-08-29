@@ -73,7 +73,8 @@ JSViewer = function () {
         pos_top += 'px';
         Y.one('#arrow_left').setStyle('bottom', pos_top);
         Y.one('#arrow_right').setStyle('bottom', pos_top);
-        Y.io("php/get_image_name.php", {
+        
+        Y.io("php/proxy.php?function=get_image_name", {
             method: 'POST',
             data : "image_id=" +  current_image_index,
             on: {
