@@ -113,7 +113,7 @@ JSViewer = function () {
             return;
         }
 
-        Y.io("php/get_image_detail.php", {
+        Y.io("php/proxy.php?function=get_image_detail", {
             method: 'POST',
             data : "image_id=" +  imageID,
             // // ajax lifecycle event handlers
