@@ -47,6 +47,6 @@ class EconomicSoapClient {
 			throw new Exception('Accounts could not be returned '. $e->getMessage());
 		}
 		
-		return $accounts;
+		echo json_encode($accounts);
 	}
 }
