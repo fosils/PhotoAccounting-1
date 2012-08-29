@@ -17,12 +17,19 @@ YUI().use('datatable-scroll', "datasource-io", "datasource-jsonschema",
 					} ]
 				}
 			});
+			
+			calculateHeight = function(){
+				var documentHeight=parseInt(Y.one("html").getComputedStyle('height'));
+				var formHeight=parseInt(Y.one("#jsv_form").getComputedStyle('height'));
+				var marginsAndPaddingsSum=110;			
+				return documentHeight-formHeight-marginsAndPaddingsSum;
+			};
 
 			var table = new Y.DataTable({
 				caption : "Accounts Data",
 				columnset : columns,
 				scrollable : "y",
-				height : "300px"
+				height : calculateHeight()
 			}).plug(Y.Plugin.DataTableDataSource, {
 				datasource : dataSource
 			});
