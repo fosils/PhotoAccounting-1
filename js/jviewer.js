@@ -73,7 +73,8 @@ JSViewer = function () {
         pos_top += 'px';
         Y.one('#arrow_left').setStyle('bottom', pos_top);
         Y.one('#arrow_right').setStyle('bottom', pos_top);
-        Y.io("php/get_image_name.php", {
+        
+        Y.io("php/proxy.php?function=get_image_name", {
             method: 'POST',
             data : "image_id=" +  current_image_index,
             on: {
@@ -112,7 +113,7 @@ JSViewer = function () {
             return;
         }
 
-        Y.io("php/get_image_detail.php", {
+        Y.io("php/proxy.php?function=get_image_detail", {
             method: 'POST',
             data : "image_id=" +  imageID,
             // // ajax lifecycle event handlers
@@ -238,7 +239,7 @@ JSViewer = function () {
 				[Y, image_id]
 			);
 
-            Y.io("php/set_image_detail.php", {
+            Y.io("php/proxy.php?function=set_image_detail", {
                 // // this is a post
                 method: 'POST',
                 // // serialize the form. keeps bugging out ...

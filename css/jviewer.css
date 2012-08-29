@@ -1,6 +1,10 @@
 
 /** COPYRIGHT Time at Task */
 
+html{
+	height: 100%;
+}
+
 #jsv_left{
     float: left;
     width: 50%;
