@@ -6,6 +6,8 @@
 define("POST_CACHE", 2);
 define("PRE_CACHE", 5);
 
+session_name("PhotoAccounting");
+session_start();
 /**
  * Iterates over a directory and returns file objects.
  *
@@ -53,6 +55,7 @@ if(isset($_GET['imageID']) && isset($_GET['imageonly'])){
 		header("Content-type: image/png");
 		echo file_get_contents($files[$_GET['imageID']]);
 	}
+	$_SESSION['files']=$files;
 	die();
 }
 
@@ -112,6 +115,7 @@ $files = getImagesInDir('images');
 		<div id="flash_errors"></div>
 		<div id="jsv_form">
 			<ul>
+				<li><div id="jsv_image_name"></div></li>
 				<li><label for="jsv_bilag">Bilag</label>
 					<div>
 						<input type="text" name="jsv_bilag" id="jsv_bilag" value="1"
