@@ -15,5 +15,10 @@ switch($_REQUEST['function']){
 		require_once 'AccountImage.php';
 		$accoutImage = new AccountImage();
 		$accoutImage->getImageDetail($_POST['image_id']);
-		break;		
+		break;
+	case 'set_image_detail':
+		require_once 'AccountImage.php';
+		$accoutImage = new AccountImage();
+		$accoutImage->setImageDetail($_POST['image_id']);
+		break;
 }

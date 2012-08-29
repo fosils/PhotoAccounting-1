@@ -239,7 +239,7 @@ JSViewer = function () {
 				[Y, image_id]
 			);
 
-            Y.io("php/set_image_detail.php", {
+            Y.io("php/proxy.php?function=set_image_detail", {
                 // // this is a post
                 method: 'POST',
                 // // serialize the form. keeps bugging out ...
