@@ -1,19 +1,6 @@
 <?php
 class AccountImage{
 
-	public function getImageName($imageID){
-		session_name('PhotoAccounting');
-		session_start();		
-		if (isset($imageID)&&isset($_SESSION['files'])){
-			echo $this->getFirstPartOfName(basename($_SESSION['files'][$imageID]));
-		}		
-	}
-	
-	private function getFirstPartOfName($name){
-		$pos=strpos($name,"_");
-		return $pos>0 ? substr($name,0,$pos) : $name;
-	}
-	
 	public function getImageDetail($imageID){
 		// See sql/photo_accounting.sql for the relevant table structure & sample data
 		
@@ -35,7 +22,7 @@ class AccountImage{
 		$image_id = pg_escape_string($imageID);
 		
 		// Performing SQL query
-		$query = "SELECT id, entry_date, text, amount, account, offset_account FROM entries WHERE image_id = {$image_id}";
+		$query = "SELECT id, entry_date, text, amount, account, offset_account, image_name FROM entries WHERE image_id = {$image_id}";
 		$result = pg_query($query) or die('Query failed: ' . pg_last_error());
 		
 		// Get number of rows
@@ -72,6 +59,7 @@ class AccountImage{
 			$detail->belob = $row['amount'];
 			$detail->konto = $row['account'];
 			$detail->modkonto = $row['offset_account'];
+			$detail->image_name = $row['image_name'];
 		}
 		
 		// Free resultset
@@ -209,4 +197,22 @@ class AccountImage{
 			// Print results in JSON
 			echo json_encode($detail);		
 	}
+	
+	public function updateFileNames($files){
+		require_once "includes/db.php";
+		$i=1;
+		foreach ($files as $file) {
+			$image_name=$this->getFirstPartOfName(basename($file));			
+			$query = "UPDATE entries SET image_name = '{$image_name}' WHERE image_id = {$i}";
+			$result = pg_query($query);
+			pg_free_result($result);
+			$i++;			
+		}	
+		pg_close($dbconn);
+	}
+	
+	private function getFirstPartOfName($name){
+		$pos=strpos($name,"_");
+		return $pos>0 ? substr($name,0,$pos) : $name;
+	}	
 }

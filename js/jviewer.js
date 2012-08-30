@@ -74,7 +74,7 @@ JSViewer = function () {
         Y.one('#arrow_left').setStyle('bottom', pos_top);
         Y.one('#arrow_right').setStyle('bottom', pos_top);
         
-        Y.io("php/proxy.php?function=get_image_name", {
+/*        Y.io("php/proxy.php?function=get_image_name", {
             method: 'POST',
             data : "image_id=" +  current_image_index,
             on: {
@@ -82,7 +82,7 @@ JSViewer = function () {
                 	Y.one('#jsv_image_name').setHTML(response.responseText);
                 }
             }
-        });
+        });*/
     };
 
     // // START : image details
@@ -160,6 +160,8 @@ JSViewer = function () {
             $('jsv_belob').value = obj.belob;
             $('jsv_konto').value = obj.konto;
             $('jsv_modkonto').value = obj.modkonto;
+            //$('jsv_image_name').value = obj.image_name;
+            Y.one('#jsv_image_name').setHTML(obj.image_name);
         }
 
         image_id = current_image_index + 1;
