@@ -1,7 +1,7 @@
 <?php
 class AccountImage{
 
-	public function geImageName($imageID){
+	public function getImageName($imageID){
 		session_name('PhotoAccounting');
 		session_start();		
 		if (isset($imageID)&&isset($_SESSION['files'])){
