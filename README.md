@@ -4,8 +4,13 @@ PhotoAccounting
 Copyright � 2012 Time at Task Aps. All rights reserved. 
 
 
-One reasonably updated version of this repository is running at: http://images.ebogholderen.dk/1/PhotoAccounting/index.php
+The latest version of this repository is always running at: http://images.ebogholderen.dk/Open-org/PhotoAccounting/index.php
+This version gets updated every minute.
 
+If you fork this repository your fork will also be running at that server (and updated every minute) with the address:
+http://images.ebogholderen.dk/GITHUBUSERNAME/PhotoAccounting/index.php
+
+Please test your solution at that address before making a pull request to the main repository.
 
 Background information about the PhotoAccounting module
 ===============
