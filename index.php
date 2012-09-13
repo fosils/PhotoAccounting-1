@@ -6,8 +6,6 @@
 define("POST_CACHE", 2);
 define("PRE_CACHE", 5);
 
-session_name("PhotoAccounting");
-session_start();
 /**
  * Iterates over a directory and returns file objects.
  *
@@ -55,7 +53,6 @@ if(isset($_GET['imageID']) && isset($_GET['imageonly'])){
 		header("Content-type: image/png");
 		echo file_get_contents($files[$_GET['imageID']]);
 	}
-	$_SESSION['files']=$files;
 	die();
 }
 
@@ -72,6 +69,9 @@ if(isset($_GET['getimages'])){
 }
 
 $files = getImagesInDir('images');
+require_once 'php/AccountImage.php';
+$accountImage=new AccountImage();
+$accountImage->updateFileNames($files);
 
 ?>
 <!DOCTYPE html>
