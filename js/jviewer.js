@@ -436,15 +436,16 @@ JSViewer = function () {
      */
     keyDownHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
+        	if(document.activeElement.id == "jsv_tekst") return;
             e.preventDefault();
 
             switch (e.keyCode) {
             case 13: // enter
             case 87: // w (next)
-                showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
+            	showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
                 break;
             case 81: //q (previous)
-                showPrevImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
+            	showPrevImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
                 break;
             }
         };
@@ -461,6 +462,7 @@ JSViewer = function () {
      */
     keyUpHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
+        	if(document.activeElement.id == "jsv_tekst") return;
             e.preventDefault();
 
             var valas = my_key_codes[String.fromCharCode(e.keyCode).toLowerCase()];
