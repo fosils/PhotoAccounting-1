@@ -95,7 +95,8 @@ $accountImage->updateFileNames($files);
 	my_codes['d'] = '1120';
 	my_codes['f'] = '1130';
 	
-	document.onkeydown=function(e){
+	document.onkeydown=function(e){ 
+                if(document.activeElement.id == "jsv_tekst") return;
 		var valas = my_codes[String.fromCharCode(e.which).toLowerCase()];
 		if(valas != undefined) {
 			$('jsv_konto').value = valas;
