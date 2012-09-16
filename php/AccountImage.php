@@ -55,10 +55,10 @@ class AccountImage{
 				$detail->date = date('d-m-Y', $timestamp);
 			}
 		
-			$detail->tekst = $row['text'];
-			$detail->belob = $row['amount'];
-			$detail->konto = $row['account'];
-			$detail->modkonto = $row['offset_account'];
+			$detail->text = $row['text'];
+			$detail->amount = $row['amount'];
+			$detail->account = $row['account'];
+			$detail->offset_account = $row['offset_account'];
 			$detail->image_name = $row['image_name'];
 		}
 		
@@ -85,10 +85,10 @@ class AccountImage{
 		// Extract request parameters trimming spaces as well
 		$image_id = trim($imageID);
 		$entry_date = trim($_POST['date']);
-		$text = trim($_POST['tekst']);
-		$amount = trim($_POST['belob']);
-		$account = trim($_POST['konto']);
-		$offset_account = trim($_POST['modkonto']);
+		$text = trim($_POST['text']);
+		$amount = trim($_POST['amount']);
+		$account = trim($_POST['account']);
+		$offset_account = trim($_POST['offset_account']);
 		
 		// START : validation
 		// Store errors in this array using keys similar to that on the page
@@ -113,7 +113,7 @@ class AccountImage{
 			$text = '';
 		} else {
 			if (strlen($text) > 9999) {
-				$errors['tekst'] = 'Please use a maximum of 9999 characters';
+				$errors['text'] = 'Please use a maximum of 9999 characters';
 			}
 		}
 		
@@ -122,7 +122,7 @@ class AccountImage{
 			$amount = 0;
 		} else {
 			if (!is_numeric($amount)) {
-				$errors['belob'] = 'Please use a number i.e. 2.00';
+				$errors['amount'] = 'Please use a number i.e. 2.00';
 			}
 		}
 		
@@ -133,7 +133,7 @@ class AccountImage{
 			// Next line is not 100% reliable
 			// if (!is_int($account)) {
 			if ((string)(int)$account !== (string)$account) {
-				$errors['konto'] = 'Please use an integer i.e. 3120';
+				$errors['account'] = 'Please use an integer i.e. 3120';
 			}
 		}
 		
@@ -144,7 +144,7 @@ class AccountImage{
 			// Next line is not 100% reliable
 			// if (!is_int($offset_account)) {
 			if ((string)(int)$offset_account !== (string)$offset_account) {
-				$errors['modkonto'] = 'Please use an integer i.e. 4488';
+				$errors['offset_account'] = 'Please use an integer i.e. 4488';
 			}
 		}
 		// END : validation
