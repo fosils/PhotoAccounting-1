@@ -52,14 +52,14 @@ JSViewer = function () {
 
         /*
         This sets the image src to the image data and reposition the image arrows,
-        then focus on the konto field
+        then focus on the account field
         */
         $('jsv_image').src = 'loading.gif';
         $('jsv_image').src = image_data.src;
         $('jsv_image').style.maxWidth = "100%";
         $('jsv_image').style.maxHeight = "100%";
-        $('jsv_bilag').value = String(current_image_index + 1);
-        $('jsv_konto').focus();
+        $('jsv_enclosure_number').value = String(current_image_index + 1);
+        $('jsv_account').focus();
         $('jsv_link').href = image_data.src;
 
         // // START : image details
@@ -141,10 +141,10 @@ JSViewer = function () {
         var image_id, errors;
         if (obj) {
             $('jsv_date').value = obj.date;
-            $('jsv_tekst').value = obj.tekst;
-            $('jsv_belob').value = obj.belob;
-            $('jsv_konto').value = obj.konto;
-            $('jsv_modkonto').value = obj.modkonto;
+            $('jsv_text').value = obj.text;
+            $('jsv_amount').value = obj.amount;
+            $('jsv_account').value = obj.account;
+            $('jsv_offset_account').value = obj.offset_account;
             Y.one('#jsv_image_name').setHTML(obj.image_name);
         }
 
@@ -154,10 +154,10 @@ JSViewer = function () {
             errors = image_errors[image_id];
 
             Y.one('#error_date').setHTML(errors.date);
-            Y.one('#error_tekst').setHTML(errors.tekst);
-            Y.one('#error_belob').setHTML(errors.belob);
-            Y.one('#error_konto').setHTML(errors.konto);
-            Y.one('#error_modkonto').setHTML(errors.modkonto);
+            Y.one('#error_text').setHTML(errors.text);
+            Y.one('#error_amount').setHTML(errors.amount);
+            Y.one('#error_account').setHTML(errors.account);
+            Y.one('#error_offset_account').setHTML(errors.offset_account);
             
             // // The next one is a general error not related to any field
             Y.one('#error_general').setHTML(errors.general);
@@ -175,7 +175,7 @@ JSViewer = function () {
      * @return {null}
      */
     saveImageDetail = function (Y, current_image_index) {
-        var ddate, image_id, tekst, belob, konto, modkonto, obj;
+        var ddate, image_id, text, amount, account, offset_account, obj;
 
         // Skip saving to database if:
         // 1) image does not exists i.e. pressing 'w' at the last image
@@ -188,10 +188,10 @@ JSViewer = function () {
         // Get field values for obj
         // var date = $('jsv_date').value;
         ddate = $('jsv_date').value;
-        tekst = $('jsv_tekst').value;
-        belob = $('jsv_belob').value;
-        konto = $('jsv_konto').value;
-        modkonto = $('jsv_modkonto').value;
+        text = $('jsv_text').value;
+        amount = $('jsv_amount').value;
+        account = $('jsv_account').value;
+        offset_account = $('jsv_offset_account').value;
 
         // Get obj in RAM
         obj = image_details[image_id];
@@ -204,7 +204,7 @@ JSViewer = function () {
         // If there is a difference between the object in RAM
         // and the field values, save object.
         // NOTE : "undefined" is not the same as an empty string :)
-        if (obj.date == ddate && obj.tekst == tekst && obj.belob == belob && obj.konto == konto && obj.modkonto == modkonto) {
+        if (obj.date == ddate && obj.text == text && obj.amount == amount && obj.account == account && obj.offset_account == offset_account) {
 
             log('no need to save ' + image_id);
 
@@ -212,10 +212,10 @@ JSViewer = function () {
 
             // Update object in RAM
             obj.date = ddate;
-            obj.tekst = tekst;
-            obj.belob = belob;
-            obj.konto = konto;
-            obj.modkonto = modkonto;
+            obj.text = text;
+            obj.amount = amount;
+            obj.account = account;
+            obj.offset_account = offset_account;
             image_details[image_id] = obj;
 
 			// Subscribe function 'onDbUpdateFailure' to "io.failure" i.e. timeout,
@@ -235,10 +235,10 @@ JSViewer = function () {
                 data : "image_id=" +  image_id
                     // + "&date=" + date
                     + "&date=" + ddate
-                    + "&tekst=" + tekst
-                    + "&belob=" + belob
-                    + "&konto=" + konto
-                    + "&modkonto=" + modkonto,
+                    + "&text=" + text
+                    + "&amount=" + amount
+                    + "&account=" + account
+                    + "&offset_account=" + offset_account,
                 // Abort the transaction, if it is still pending, after 3000ms.
                 timeout : 3000,
                 // Ajax lifecycle event handlers
@@ -264,10 +264,10 @@ JSViewer = function () {
                             /*
                             // Update object in RAM
                             obj['date'] = ddate;
-                            obj['tekst'] = tekst;
-                            obj['belob'] = belob;
-                            obj['konto'] = konto;
-                            obj['modkonto'] = modkonto;
+                            obj['text'] = text;
+                            obj['amount'] = amount;
+                            obj['account'] = account;
+                            obj['offset_account'] = offset_account;
                             image_details[image_id] = obj;
 
                             // // Update fields too if the image is currently on display
@@ -436,16 +436,15 @@ JSViewer = function () {
      */
     keyDownHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
-        	if(document.activeElement.id == "jsv_tekst") return;
             e.preventDefault();
 
             switch (e.keyCode) {
             case 13: // enter
             case 87: // w (next)
-            	showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
+                showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
                 break;
             case 81: //q (previous)
-            	showPrevImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
+                showPrevImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
                 break;
             }
         };
@@ -462,7 +461,6 @@ JSViewer = function () {
      */
     keyUpHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
-        	if(document.activeElement.id == "jsv_tekst") return;
             e.preventDefault();
 
             var valas = my_key_codes[String.fromCharCode(e.keyCode).toLowerCase()];
@@ -607,7 +605,7 @@ JSViewer = function () {
                     We cache PRE_CACHE number of images at a time, starting from the first image
                 */
                 current_image_index = from;
-                $('jsv_bilag').value = String(current_image_index + 1);
+                $('jsv_enclosure_number').value = String(current_image_index + 1);
 
                 cacheGroup(Y, current_image_index, PRE_CACHE);
 
