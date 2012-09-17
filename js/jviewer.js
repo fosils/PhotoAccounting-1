@@ -436,7 +436,7 @@ JSViewer = function () {
      */
     keyDownHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
-            if(document.activeElement.id == "jsv_tekst") return;
+            if(document.activeElement.id == "jsv_text") return;
             e.preventDefault();
 
             switch (e.keyCode) {
@@ -462,7 +462,7 @@ JSViewer = function () {
      */
     keyUpHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
-            if(document.activeElement.id == "jsv_tekst") return;
+            if(document.activeElement.id == "jsv_text") return;
             e.preventDefault();
 
             var valas = my_key_codes[String.fromCharCode(e.keyCode).toLowerCase()];
