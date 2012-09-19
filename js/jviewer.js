@@ -441,8 +441,19 @@ JSViewer = function () {
             }
 
             if (e.target.getAttribute('class') == 'hotkey-input') {
-                e.target.value = String.fromCharCode(e.keyCode);
+                document.getElementById(e.target.getAttribute('id')).value = String.fromCharCode(e.keyCode);
                 return;
+            }
+
+            var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
+                .children[1].children[0].getElementsByTagName("tr").length;
+
+            var a = Array();
+            for (var i = 1; i < rows.length; i++) {
+                if ( String.fromCharCode(e.keyCode) ==  rows[i].children[3].children[0].value ) {
+                    alert(rows[i].children[0].innerHTML);
+                    break;
+                }
             }
 
             e.preventDefault();
