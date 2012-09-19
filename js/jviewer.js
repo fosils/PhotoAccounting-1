@@ -494,17 +494,12 @@ JSViewer = function () {
             for (var i = 1; i < rows.length; i++) {
                 if ( String.fromCharCode(e.keyCode) ==  rows[i].children[3].children[0].value ) {
                     document.getElementById('error_account').innerHTML = "";
+                    showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
                     break;
                 }
             }
 
             e.preventDefault();
-
-            var valas = my_key_codes[String.fromCharCode(e.keyCode).toLowerCase()];
-
-            if (valas) {
-                showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
-            }
         };
     };
 

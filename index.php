@@ -88,31 +88,6 @@ $accountImage->updateFileNames($files);
 	var $ = function(id){
 		return document.getElementById(id);
 	}
-
-	var my_codes = Array();
-	my_codes['a'] = '3120';
-	my_codes['s'] = '1110';
-	my_codes['d'] = '1120';
-	my_codes['f'] = '1130';
-
-/*
-	document.onkeydown=function(e) {
-		if (e.target.getAttribute('class') != "hotkey-input") {
-			var valas = my_codes[String.fromCharCode(e.which).toLowerCase()];
-			if(valas != undefined) {
-				$('jsv_account').value = valas;
-				//comment out the next line if you want the cursor to stay in the field.
-				$('jsv_account').blur();
-				return false;
-			} else {
-				return true;
-			}
-		} else {
-			e.target.value = String.fromKeyCode(e.keyCode);
-
-			return false;
-		}
-	} */
 	JSViewer.start(<?php echo count($files); ?>, <?php echo POST_CACHE; ?>, <?php echo PRE_CACHE; ?>, <?php echo isset($_GET['imageID'])?$_GET['imageID']:0; ?>,my_codes);
    </script>
 </head>
