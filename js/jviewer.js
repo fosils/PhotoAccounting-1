@@ -441,7 +441,7 @@ JSViewer = function () {
             }
 
             if (e.target.getAttribute('class') == 'hotkey-input') {
-                e.target.value = "";
+                e.target.value = String.fromCharCode(e.keyCode);
                 return;
             }
 
