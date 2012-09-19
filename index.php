@@ -96,7 +96,7 @@ $accountImage->updateFileNames($files);
 	my_codes['f'] = '1130';
 
 	document.onkeydown=function(e) {
-		if (e.target.tagName != "input") {
+		if (e.target.getAttribute('class') != "hotkey-input") {
 			var valas = my_codes[String.fromCharCode(e.which).toLowerCase()];
 			if(valas != undefined) {
 				$('jsv_account').value = valas;
