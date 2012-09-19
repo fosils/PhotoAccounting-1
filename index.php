@@ -95,7 +95,7 @@ $accountImage->updateFileNames($files);
 	my_codes['d'] = '1120';
 	my_codes['f'] = '1130';
 
-	document.onkeydown=function(e) {
+	document.onkeydown=function(e, value) {
 		if (e.target.getAttribute('class') != "hotkey-input") {
 			var valas = my_codes[String.fromCharCode(e.which).toLowerCase()];
 			if(valas != undefined) {
@@ -103,9 +103,12 @@ $accountImage->updateFileNames($files);
 				//comment out the next line if you want the cursor to stay in the field.
 				$('jsv_account').blur();
 				return false;
+			} else {
+				return true;
 			}
 		} else {
-			return true;
+			e.target.value = value;
+			return false;
 		}
 	}
 	JSViewer.start(<?php echo count($files); ?>, <?php echo POST_CACHE; ?>, <?php echo PRE_CACHE; ?>, <?php echo isset($_GET['imageID'])?$_GET['imageID']:0; ?>,my_codes);
