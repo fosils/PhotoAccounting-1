@@ -42,12 +42,12 @@
 				if ($response->isOk()){
 					echo "<response><code>100</code></response>";
 				}else{
-    				echo "<response><code>300</code></response>";
+    				echo "<response><code>200</code></response>";
 				}
 			}
 		}
     } else {
-    	echo "<response><code>400</code></response>";
+    	echo "<response><code>200</code></response>";
     }
     
 ?>
