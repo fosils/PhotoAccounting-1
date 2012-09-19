@@ -102,9 +102,10 @@ $accountImage->updateFileNames($files);
 				$('jsv_account').value = valas;
 				//comment out the next line if you want the cursor to stay in the field.
 				$('jsv_account').blur();
+				return false;
 			}
 		} else {
-			return false;
+			return true;
 		}
 	}
 	JSViewer.start(<?php echo count($files); ?>, <?php echo POST_CACHE; ?>, <?php echo PRE_CACHE; ?>, <?php echo isset($_GET['imageID'])?$_GET['imageID']:0; ?>,my_codes);
