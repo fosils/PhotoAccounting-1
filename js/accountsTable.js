@@ -40,4 +40,6 @@ YUI().use('datatable-scroll', "datasource-io", "datasource-jsonschema",
 
 			table.render('#economicAccountsData');
 			table.datasource.load();
+
+			window.accountsTable = table;
 		});
