@@ -18,7 +18,7 @@
 				$s3->ssl_verification = false;
 				///////////////////////////////////////////////////////////////////
 				
-				$folderName = $_REQUEST["devicetoken"];
+				$folderName = "images/{$_REQUEST["devicetoken"]}";
 				$imageCategory = $_REQUEST["imagetype"];
 				if(!is_dir($folderName)) {
 					mkdir($folderName);
