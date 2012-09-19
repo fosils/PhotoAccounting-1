@@ -88,6 +88,9 @@ $accountImage->updateFileNames($files);
 	var $ = function(id){
 		return document.getElementById(id);
 	}
+
+	var my_codes = Array();
+
 	JSViewer.start(<?php echo count($files); ?>, <?php echo POST_CACHE; ?>, <?php echo PRE_CACHE; ?>, <?php echo isset($_GET['imageID'])?$_GET['imageID']:0; ?>,my_codes);
    </script>
 </head>
