@@ -3,7 +3,12 @@ YUI().use('datatable-scroll', "datasource-io", "datasource-jsonschema",
 			var columns = [ {
 				key : "Number",
 				label : "No."
-			}, 'Name', 'VAT', 'Hotkey' ];
+			}, 'Name', 'VAT', {
+				key : "Hotkey"
+				label : "HotKey"
+				allowHTML: true,
+				emptyCellValue: "<input type='text'/>" }
+			} ];
 
 			var dataSource = new Y.DataSource.IO({
 				source : "php/proxy.php?function=get_accounts"
