@@ -436,8 +436,12 @@ JSViewer = function () {
      */
     keyDownHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
-            if(e.target.id == "jsv_text" ||
-                e.target.getAttribute('class') == 'hotkey-input') {
+            if (e.target.getAttribute('id') == "jsv_text" {
+                return;
+            }
+
+            if (e.target.getAttribute('class') == 'hotkey-input') {
+                e.target.value = String.fromKeyCode(e.keyCode);
                 return;
             }
             e.preventDefault();
@@ -465,7 +469,7 @@ JSViewer = function () {
      */
     keyUpHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
-            if(e.target.id == "jsv_text" ||
+            if(e.target.getAttribute('id') == "jsv_text" ||
                 e.target.getAttribute('class') == 'hotkey-input') {
                 return;
             }
@@ -489,7 +493,7 @@ JSViewer = function () {
      * @return {null}
      */
     setKeyboardHandlers = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
-        Y.one('doc').on("key", keyDownHandler(Y, total_number_images, POST_CACHE, PRE_CACHE), 'enter,81,87');
+        Y.one('doc').on("keydown", keyDownHandler(Y, total_number_images, POST_CACHE, PRE_CACHE), 'enter,81,87');
         Y.one('doc').on("keyup", keyUpHandler(Y, total_number_images, POST_CACHE, PRE_CACHE));
     };
 
