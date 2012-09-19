@@ -436,7 +436,7 @@ JSViewer = function () {
      */
     keyDownHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
-            if (e.target.getAttribute('id') == "jsv_text" {
+            if (e.target.getAttribute('id') == "jsv_text") {
                 return;
             }
 
@@ -444,6 +444,7 @@ JSViewer = function () {
                 e.target.value = String.fromKeyCode(e.keyCode);
                 return;
             }
+
             e.preventDefault();
 
             switch (e.keyCode) {
