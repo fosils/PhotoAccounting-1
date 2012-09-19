@@ -95,7 +95,7 @@ $accountImage->updateFileNames($files);
 	my_codes['d'] = '1120';
 	my_codes['f'] = '1130';
 
-	document.onkeydown=function(e, value) {
+	document.onkeydown=function(e) {
 		if (e.target.getAttribute('class') != "hotkey-input") {
 			var valas = my_codes[String.fromCharCode(e.which).toLowerCase()];
 			if(valas != undefined) {
@@ -107,7 +107,8 @@ $accountImage->updateFileNames($files);
 				return true;
 			}
 		} else {
-			e.target.value = value;
+			e.target.value = String.fromCharCode(e.keyCode);
+
 			return false;
 		}
 	}
