@@ -16,20 +16,14 @@
 	</head>
     <body>
     <div style='border:1px solid black;'>
-    	<div style='background-color:#0c0c0c'>Existing Files</div>
+    	<div style='background-color:#0c0c0c;color:white;'>Existing Files</div>
     	<div>
     		<ul>
 		    <?php
 			    if($response->isOk()){
 			    	
 				    foreach($response->body->Contents as $obj){
-				    	$url = $s3->get_object_url($bucket, $obj-Key, '1 hour', array(
-						    'response' => array(
-						        'content-type'     => 'text/plain',
-						        'content-language' => 'en-US',
-						        'expires'          => gmdate(DATE_RFC2822, strtotime('1 January 1980'))
-						    )
-						));
+				    	$url = $s3->get_object_url($bucket, $obj->Key, (time()+3600));
 				    	
 				    	print "<li etag='{$obj->ETag}' size='{$obj->Size}' type='{$obj->StorageClass}'><a target='_blank' href='$url'>{$obj->Key}</a></li>";
 				    }
@@ -40,23 +34,23 @@
     	</div>
     </div>
     <div style='border:1px solid black;'>
-    	<div style='background-color:#0c0c0c'>Upload New File</div>
+    	<div style='background-color:#0c0c0c;color:white;'>Upload New File</div>
     	<div>
-    		<form action='ImageUploader.php' method='GET'>
-    			<ul>
+			<form action='ImageUploader.php' method='POST' id='fImageUpload' enctype='multipart/form-data'>
+    			<ul style='list-style:none;'>
     				<li>
     					<label for='deviceToken'>Device Token</label>
-    					<input type='text' name='deviceToken' id='deviceToken' />
+    					<input type='text' name='devicetoken' id='devicetoken' />
     				</li>
     				<li>
     					<label for='deviceToken'>Image Type</label>
-    					<input type='text' name='imageType' id='imageType' />
+    					<input type='text' name='imagetype' id='imagetype' />
     				</li>
     				<li>
     					<label for='deviceToken'>Image</label>
     					<input type='file' name='newImage' id='newImage' />
     				</li>
-    				<li>
+    				<li style='text-indent:100px;'>
     					<button type='submit' id='submitImage' name='submitImage'>Submit Image</button>
     				</li>
     			</ul>

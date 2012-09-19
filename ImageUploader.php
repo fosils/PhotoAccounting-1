@@ -15,15 +15,16 @@
 				///////////////////////////////////////////////////////////////////
 				// Instantiate the AmazonS3 class
 				$s3 = new AmazonS3(array("key"=>"AKIAINETGK3VTKANM25Q", "secret"=>"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"));
+				$s3->ssl_verification = false;
 				///////////////////////////////////////////////////////////////////
 				
-				$folderName = $_GET["devicetoken"];
-				$imageCategory = $_GET["imagetype"];
+				$folderName = $_REQUEST["devicetoken"];
+				$imageCategory = $_REQUEST["imagetype"];
 				if(!is_dir($folderName)) {
 					mkdir($folderName);
 				}
 				
-				$newfilename = strtotime("now");
+				$newfilename = @strtotime("now");
 				$newfilename = $imageCategory."_".$newfilename.".jpeg";
 				move_uploaded_file($imageFile['tmp_name'],
 						$folderName."/".$newfilename);
@@ -41,12 +42,12 @@
 				if ($response->isOk()){
 					echo "<response><code>100</code></response>";
 				}else{
-    				echo "<response><code>200</code></response>";
+    				echo "<response><code>300</code></response>";
 				}
 			}
 		}
     } else {
-    	echo "<response><code>200</code></response>";
+    	echo "<response><code>400</code></response>";
     }
     
 ?>
