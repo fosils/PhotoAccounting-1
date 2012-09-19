@@ -446,12 +446,13 @@ JSViewer = function () {
             }
 
             var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
-                .children[1].children[0].getElementsByTagName("tr").length;
+                .children[1].children[0].getElementsByTagName("tr");
 
             var a = Array();
             for (var i = 1; i < rows.length; i++) {
                 if ( String.fromCharCode(e.keyCode) ==  rows[i].children[3].children[0].value ) {
                     alert(rows[i].children[0].innerHTML);
+                    alert(rows[i].children[1].innerHTML);
                     break;
                 }
             }
