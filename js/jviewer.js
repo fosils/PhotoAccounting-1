@@ -451,8 +451,8 @@ JSViewer = function () {
             var a = Array();
             for (var i = 1; i < rows.length; i++) {
                 if ( String.fromCharCode(e.keyCode) ==  rows[i].children[3].children[0].value ) {
-                    alert(rows[i].children[0].innerHTML);
-                    alert(rows[i].children[1].innerHTML);
+                    document.getElementById('jsv_account').value = rows[i].children[0].innerHTML;
+                    document.getElementById('error_account').innerHTML = rows[i].children[1].innerHTML;
                     break;
                 }
             }
@@ -486,6 +486,18 @@ JSViewer = function () {
                 e.target.getAttribute('class') == 'hotkey-input') {
                 return;
             }
+
+            var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
+                .children[1].children[0].getElementsByTagName("tr");
+
+            var a = Array();
+            for (var i = 1; i < rows.length; i++) {
+                if ( String.fromCharCode(e.keyCode) ==  rows[i].children[3].children[0].value ) {
+                    document.getElementById('error_account').innerHTML = "";
+                    break;
+                }
+            }
+
             e.preventDefault();
 
             var valas = my_key_codes[String.fromCharCode(e.keyCode).toLowerCase()];
