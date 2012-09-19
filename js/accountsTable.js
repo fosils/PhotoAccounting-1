@@ -4,8 +4,8 @@ YUI().use('datatable-scroll', "datasource-io", "datasource-jsonschema",
 				key : "Number",
 				label : "No."
 			}, 'Name', 'VAT', {
-				key : "Hotkey"
-				label : "HotKey"
+				key : "Hotkey",
+				label : "HotKey",
 				allowHTML: true,
 				emptyCellValue: "<input type='text'/>" }
 			} ];
