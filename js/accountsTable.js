@@ -7,8 +7,7 @@ YUI().use('datatable-scroll', "datasource-io", "datasource-jsonschema",
 				key : "Hotkey",
 				label : "HotKey",
 				allowHTML: true,
-				emptyCellValue: "<input type='text'/>" }
-			} ];
+				emptyCellValue: "<input type='text'/>" } ];
 
 			var dataSource = new Y.DataSource.IO({
 				source : "php/proxy.php?function=get_accounts"
