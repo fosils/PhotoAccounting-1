@@ -3,7 +3,7 @@ YUI().use('datatable-scroll', "datasource-io", "datasource-jsonschema",
 			var columns = [ {
 				key : "Number",
 				label : "No."
-			}, 'Name', 'VAT' ];
+			}, 'Name', 'VAT', 'Hotkey' ];
 
 			var dataSource = new Y.DataSource.IO({
 				source : "php/proxy.php?function=get_accounts"
@@ -17,11 +17,11 @@ YUI().use('datatable-scroll', "datasource-io", "datasource-jsonschema",
 					} ]
 				}
 			});
-			
+
 			calculateHeight = function(){
 				var documentHeight=parseInt(Y.one("html").getComputedStyle('height'));
 				var formHeight=parseInt(Y.one("#jsv_form").getComputedStyle('height'));
-				var marginsAndPaddingsSum=110;			
+				var marginsAndPaddingsSum=110;
 				return documentHeight-formHeight-marginsAndPaddingsSum;
 			};
 
