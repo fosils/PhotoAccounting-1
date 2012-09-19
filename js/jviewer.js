@@ -96,7 +96,7 @@ JSViewer = function () {
             log('skipping database loading of image id ' + imageID);
             return;
         }
-        
+
         // 3) image does not exists i.e. pressing 'q' at the first image or 'w' at the last image
         if (imageID < 0 || imageID > my_image_count) {
             log('skipping database loading of image id ' + imageID);
@@ -158,7 +158,7 @@ JSViewer = function () {
             Y.one('#error_amount').setHTML(errors.amount);
             Y.one('#error_account').setHTML(errors.account);
             Y.one('#error_offset_account').setHTML(errors.offset_account);
-            
+
             // // The next one is a general error not related to any field
             Y.one('#error_general').setHTML(errors.general);
         } else {
@@ -219,8 +219,8 @@ JSViewer = function () {
             image_details[image_id] = obj;
 
 			// Subscribe function 'onDbUpdateFailure' to "io.failure" i.e. timeout,
-			// passing it Y & the affected image id when that happens 
-			Y.on('io:failure', onDbUpdateFailure, Y, 
+			// passing it Y & the affected image id when that happens
+			Y.on('io:failure', onDbUpdateFailure, Y,
 				// 'Transaction Failed'
 				[Y, image_id]
 			);
@@ -275,18 +275,18 @@ JSViewer = function () {
                                 populateImageDetail(Y, obj);
                             }
                             */
-        
+
                             // Remove its errors
                             delete image_errors[image_id];
-        
+
                             // Remove update restriction
                             delete restrict_db_update[image_id];
                        }
 
-						// // Clear the general error as we can connect 
+						// // Clear the general error as we can connect
 						// // to the server just fine
 						general_error = '';
-						
+
 						// // Update the flash_errors div to notify
 						// // users that there is/are error(s)
 						displayFlashError(Y);
@@ -298,29 +298,29 @@ JSViewer = function () {
     };
 
     /**
-     * Handles storage of errors from timeouts arising from example 
+     * Handles storage of errors from timeouts arising from example
      * when the server is unreachable when saving an image's detail.
-     * 
+     *
      * The customer for this project actually has a test case, where he
      * disconnects his PC from LAN and expects the app to inform him
      * that the database update has failed.
      *
      * @param {transactionid} The transaction's ID
-     * @param {response} The response object.  Only status and statusText 
-     * 					are populated when the transaction is terminated 
-     * 					due to abort or timeout. The status will read 0, 
-     * 					and statusText will return "timeout" or "abort" 
+     * @param {response} The response object.  Only status and statusText
+     * 					are populated when the transaction is terminated
+     * 					due to abort or timeout. The status will read 0,
+     * 					and statusText will return "timeout" or "abort"
      * 					depending on the mode of termination.
-     * @param {argzz} Can be anything you want. Here it is the id 
+     * @param {argzz} Can be anything you want. Here it is the id
      *                  of the image which we were trying to update
      * @return {null}
      */
 	onDbUpdateFailure = function (transactionid, response, argzz) {
 		// image_errors[argzz[1]] = {general : 'Unable to connect to database'};
 		general_error = 'Unable to connect to database';
-		
-		// // Since the 'complete' event of the Ajax handler wasn't 
-		// // reached if there is a timeout, run the code to display 
+
+		// // Since the 'complete' event of the Ajax handler wasn't
+		// // reached if there is a timeout, run the code to display
 		// // errors here as well
 		displayFlashError(argzz[0]);
 	};
@@ -328,7 +328,7 @@ JSViewer = function () {
     /**
      * Iterates through all entries in image_errors and checks if
      * it contains valid errors i.e. not empty
-     * 
+     *
      * If any is found, then the flash error message is shown.
      *
      * @param {Y} Yui3 object
@@ -436,7 +436,10 @@ JSViewer = function () {
      */
     keyDownHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
-            if(document.activeElement.id == "jsv_text") return;
+            if(e.target.id == "jsv_text" ||
+                e.target.getAttribute('class') == 'hotkey-input') {
+                return;
+            }
             e.preventDefault();
 
             switch (e.keyCode) {
@@ -462,7 +465,10 @@ JSViewer = function () {
      */
     keyUpHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
-            if(document.activeElement.id == "jsv_text") return;
+            if(e.target.id == "jsv_text" ||
+                e.target.getAttribute('class') == 'hotkey-input') {
+                return;
+            }
             e.preventDefault();
 
             var valas = my_key_codes[String.fromCharCode(e.keyCode).toLowerCase()];

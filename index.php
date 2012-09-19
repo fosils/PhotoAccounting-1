@@ -95,6 +95,7 @@ $accountImage->updateFileNames($files);
 	my_codes['d'] = '1120';
 	my_codes['f'] = '1130';
 
+/*
 	document.onkeydown=function(e) {
 		if (e.target.getAttribute('class') != "hotkey-input") {
 			var valas = my_codes[String.fromCharCode(e.which).toLowerCase()];
@@ -107,11 +108,11 @@ $accountImage->updateFileNames($files);
 				return true;
 			}
 		} else {
-			e.target.value = String.fromCharCode(e.keyCode);
+			e.target.value = String.fromKeyCode(e.keyCode);
 
 			return false;
 		}
-	}
+	} */
 	JSViewer.start(<?php echo count($files); ?>, <?php echo POST_CACHE; ?>, <?php echo PRE_CACHE; ?>, <?php echo isset($_GET['imageID'])?$_GET['imageID']:0; ?>,my_codes);
    </script>
 </head>
