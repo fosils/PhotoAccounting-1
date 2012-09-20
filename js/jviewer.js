@@ -524,8 +524,8 @@ JSViewer = function () {
             } */
             if(e.target.getAttribute('id') == "jsv_text" ||
                 e.target.getAttribute('class') == 'hotkey-input') {
+            } else {
                 e.preventDefault();
-                return;
             }
         };
     };
