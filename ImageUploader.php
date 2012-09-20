@@ -10,13 +10,6 @@
 				strlen($imageFile['tmp_name']) == 0) {
 				echo "<response><code>200</code></response>";
 			} else {
-				///////////////////////////////////////////////////////////////////
-				// S3 Code
-				///////////////////////////////////////////////////////////////////
-				// Instantiate the AmazonS3 class
-				$s3 = new AmazonS3(array("key"=>"AKIAINETGK3VTKANM25Q", "secret"=>"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"));
-				$s3->ssl_verification = false;
-				///////////////////////////////////////////////////////////////////
 				
 				$folderName = "images/{$_REQUEST["devicetoken"]}";
 				$imageCategory = $_REQUEST["imagetype"];
@@ -29,20 +22,35 @@
 				move_uploaded_file($imageFile['tmp_name'],
 						$folderName."/".$newfilename);
 				
-				///////////////////////////////////////////////////////////////////
-				// S3 Code
-				///////////////////////////////////////////////////////////////////
-				$file = $folderName."/".$newfilename;
-				$bucket = "all-user-files";
-				$response = $s3->create_object($bucket, $file, array(
-						'fileUpload' => $file
-				));
-				///////////////////////////////////////////////////////////////////
-				
-				if ($response->isOk()){
-					echo "<response><code>100</code></response>";
+				//Check to make sure that the uploaded file contains something
+				//This should take care of any 0 byte files being stored on the server.
+				if($imageFile['size'] <= 0){
+					echo "<response><code>200</code></response>";
+					continue;
 				}else{
-    				echo "<response><code>200</code></response>";
+					///////////////////////////////////////////////////////////////////
+					// S3 Code
+					///////////////////////////////////////////////////////////////////
+					// Instantiate the AmazonS3 class
+					$s3 = new AmazonS3(array("key"=>"AKIAINETGK3VTKANM25Q", "secret"=>"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"));
+					$s3->ssl_verification = false;
+					///////////////////////////////////////////////////////////////////
+				
+					///////////////////////////////////////////////////////////////////
+					// S3 Code
+					///////////////////////////////////////////////////////////////////
+					$file = $folderName."/".$newfilename;
+					$bucket = "all-user-files";
+					$response = $s3->create_object($bucket, $file, array(
+							'fileUpload' => $file
+					));
+					///////////////////////////////////////////////////////////////////
+					
+					if ($response->isOk()){
+						echo "<response><code>100</code></response>";
+					}else{
+	    				echo "<response><code>200</code></response>";
+					}
 				}
 			}
 		}
