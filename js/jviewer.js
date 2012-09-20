@@ -501,7 +501,7 @@ JSViewer = function () {
 
     keyPressHandler = function() {
         return function (e) {
-            if (e.target.getAttribute('class') == 'hotkey-input') {
+             /* if (e.target.getAttribute('class') == 'hotkey-input') {
                 var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                     .children[1].children[0].getElementsByTagName("tr");
 
@@ -523,6 +523,11 @@ JSViewer = function () {
                     }
                 }
                 document.getElementById(e.target.getAttribute('id')).value = "";
+            } */
+            if(e.target.getAttribute('id') == "jsv_text" ||
+                e.target.getAttribute('class') == 'hotkey-input') {
+                e.preventDefault();
+                return;
             }
         };
     };
