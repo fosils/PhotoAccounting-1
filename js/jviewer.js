@@ -438,6 +438,7 @@ JSViewer = function () {
         return function (e) {
             if (e.target.getAttribute('id') == "jsv_text" ||
                 e.target.getAttribute('class') == 'hotkey-input' ) {
+                e.preventDefault();
                 return;
             }
 
@@ -452,8 +453,6 @@ JSViewer = function () {
                     break;
                 }
             }
-
-            e.preventDefault();
 
             switch (e.keyCode) {
             case 13: // enter
@@ -480,6 +479,7 @@ JSViewer = function () {
         return function (e) {
             if(e.target.getAttribute('id') == "jsv_text" ||
                 e.target.getAttribute('class') == 'hotkey-input') {
+                e.preventDefault();
                 return;
             }
 
@@ -494,8 +494,6 @@ JSViewer = function () {
                     break;
                 }
             }
-
-            e.preventDefault();
         };
     };
 
