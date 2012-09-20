@@ -436,39 +436,13 @@ JSViewer = function () {
      */
     keyDownHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
-            if (e.target.getAttribute('id') == "jsv_text") {
+            if (e.target.getAttribute('id') == "jsv_text" || 
+                e.target.getAttribute('class') == 'hotkey-input' ) {
                 return;
             }
 
             var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                 .children[1].children[0].getElementsByTagName("tr");
-
-            if (e.target.getAttribute('class') == 'hotkey-input') {
-                var used="";
-                if (e.keyCode == 13 || e.keyCode == 87 || e.keyCode == 81) {
-                    document.getElementById(e.target.getAttribute('id')).value = "";
-                    alert("This keys can't be assigned because it is a reserved key!");
-                    if (!e) var e = window.event;
-                    e.cancelBubble = true;
-                    if (e.stopPropagation) e.stopPropagation();
-                    return false
-                }
-                for (var i = 1; i < rows.length; i++) {
-                    if ( String.fromCharCode(e.keyCode) == rows[i].children[3].children[0].value
-                         && e.target.getAttribute('id') != rows[i].children[3].children[0].getAttribute('id') ) {
-                        var name = rows[i].children[1].innerHTML;
-                        document.getElementById(e.target.getAttribute('id')).value = "";
-                        alert("This key can't be assigned because it is assigned to '" + name +"'!");
-                        if (!e) var e = window.event;
-                        e.cancelBubble = true;
-                        if (e.stopPropagation) e.stopPropagation();
-                        return false;
-                    }
-                }
-                
-                document.getElementById(e.target.getAttribute('id')).value = String.fromCharCode(e.keyCode);
-                return;
-            }
 
             var a = Array();
             for (var i = 1; i < rows.length; i++) {
@@ -525,6 +499,28 @@ JSViewer = function () {
         };
     };
 
+    keyPressHandler = function() {
+        return function (e) {
+            if (e.target.getAttribute('class') == 'hotkey-input') {
+                if (e.keyCode == 13 || e.keyCode == 87 || e.keyCode == 81) {
+                    document.getElementById(e.target.getAttribute('id')).value = "";
+                    alert("This keys can't be assigned because it is a reserved key!");
+                    return false
+                }
+                for (var i = 1; i < rows.length; i++) {
+                    if ( String.fromCharCode(e.keyCode) == rows[i].children[3].children[0].value
+                         && e.target.getAttribute('id') != rows[i].children[3].children[0].getAttribute('id') ) {
+                        var name = rows[i].children[1].innerHTML;
+                        document.getElementById(e.target.getAttribute('id')).value = "";
+                        alert("This key can't be assigned because it is assigned to '" + name +"'!");
+                        return false;
+                    }
+                
+                }    
+            }
+        };
+    };
+
     /**
      * Initialize the keyboard handlers
      *
@@ -537,6 +533,7 @@ JSViewer = function () {
     setKeyboardHandlers = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         Y.one('doc').on("keydown", keyDownHandler(Y, total_number_images, POST_CACHE, PRE_CACHE), 'enter,81,87');
         Y.one('doc').on("keyup", keyUpHandler(Y, total_number_images, POST_CACHE, PRE_CACHE));
+        Y.one('doc').on("keypress", keyPressHandler());
     };
 
     /**
