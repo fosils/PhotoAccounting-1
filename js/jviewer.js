@@ -446,7 +446,7 @@ JSViewer = function () {
 
             var a = Array();
             for (var i = 1; i < rows.length; i++) {
-                if ( e.keyCode ==  rows[i].children[3].children[0].getAttribute('data') ) {
+                if ( String.fromCharCode(e.keyCode).toLowerCase() ==  rows[i].children[3].children[0].getAttribute('value').toLowerCase() ) {
                     document.getElementById('jsv_account').value = rows[i].children[0].innerHTML;
                     document.getElementById('account_name').innerHTML = rows[i].children[1].innerHTML;
                     break;
@@ -488,7 +488,7 @@ JSViewer = function () {
 
             var a = Array();
             for (var i = 1; i < rows.length; i++) {
-                if ( e.keyCode ==  rows[i].children[3].children[0].getAttribute('data') ) {
+                if ( String.fromCharCode(e.keyCode).toLowerCase() ==  rows[i].children[3].children[0].getAttribute('value').toLowerCase() ) {
                     document.getElementById('account_name').innerHTML = "";
                     showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
                     break;
@@ -505,14 +505,16 @@ JSViewer = function () {
                 var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                     .children[1].children[0].getElementsByTagName("tr");
 
-                if (e.keyCode == 13 || e.keyCode == 87 || e.keyCode == 81) {
+                if ( e.keyCode == 13 || 
+                    String.fromCharCode(e.keyCode).toLowerCase == 'q' || 
+                    String.fromCharCode(e.keyCode).toLowerCase == 'w') {
                     alert("This keys can't be assigned because it is a reserved key!");
                     e.preventDefault();
                     return false
                 }
 
                 for (var i = 1; i < rows.length; i++) {
-                    if ( e.keyCode == rows[i].children[3].children[0].getAttribute('data')
+                    if ( String.fromCharCode(e.keyCode).toLowerCase() == rows[i].children[3].children[0].getAttribute('value').toLowerCase()
                          && e.target.getAttribute('id') != rows[i].children[3].children[0].getAttribute('id') ) {
                         var name = rows[i].children[1].innerHTML;
                         alert("This key can't be assigned because it is assigned to '" + name +"'!");
@@ -521,7 +523,6 @@ JSViewer = function () {
                     }
                 }    
                 document.getElementById(e.target.getAttribute('id')).value = "";
-                document.getElementById(e.target.getAttribute('id')).setAttribute('data', e.keyCode);
             }
         };
     };
