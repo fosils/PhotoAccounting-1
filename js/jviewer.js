@@ -503,7 +503,7 @@ JSViewer = function () {
         return function (e) {
             if (e.target.getAttribute('class') == 'hotkey-input') {
                 var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
-                    children[1].children[0].getElementsByTagName("tr");
+                    .children[1].children[0].getElementsByTagName("tr");
 
                 if (e.keyCode == 13 || e.keyCode == 87 || e.keyCode == 81) {
                     document.getElementById(e.target.getAttribute('id')).value = "";
