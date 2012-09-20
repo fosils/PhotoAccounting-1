@@ -6,6 +6,9 @@
 	$xmlContent = array();
 	if(sizeof($_FILES) > 0) {
 		foreach($_FILES as $imageFile) {
+			if($imageFile['size'] <= 0)
+				continue;
+			
 			if (!isset($imageFile['tmp_name']) ||
 				strlen($imageFile['tmp_name']) == 0) {
 				echo "<response><code>200</code></response>";
