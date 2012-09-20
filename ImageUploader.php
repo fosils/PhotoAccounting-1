@@ -6,8 +6,12 @@
 	$xmlContent = array();
 	if(sizeof($_FILES) > 0) {
 		foreach($_FILES as $imageFile) {
-			if($imageFile['size'] <= 0)
+			//Check to make sure that the uploaded file contains something
+			//This should take care of any 0 byte files being stored on the server.
+			if($imageFile['size'] <= 0){
+				echo "<response><code>200</code></response>";
 				continue;
+			}
 			
 			if (!isset($imageFile['tmp_name']) ||
 				strlen($imageFile['tmp_name']) == 0) {
