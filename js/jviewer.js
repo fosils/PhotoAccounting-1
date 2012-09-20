@@ -218,12 +218,12 @@ JSViewer = function () {
             obj.offset_account = offset_account;
             image_details[image_id] = obj;
 
-			// Subscribe function 'onDbUpdateFailure' to "io.failure" i.e. timeout,
-			// passing it Y & the affected image id when that happens
-			Y.on('io:failure', onDbUpdateFailure, Y,
-				// 'Transaction Failed'
-				[Y, image_id]
-			);
+            // Subscribe function 'onDbUpdateFailure' to "io.failure" i.e. timeout,
+            // passing it Y & the affected image id when that happens
+            Y.on('io:failure', onDbUpdateFailure, Y,
+                // 'Transaction Failed'
+                [Y, image_id]
+            );
 
             Y.io("php/proxy.php?function=set_image_detail", {
                 // // this is a post
@@ -283,13 +283,13 @@ JSViewer = function () {
                             delete restrict_db_update[image_id];
                        }
 
-						// // Clear the general error as we can connect
-						// // to the server just fine
-						general_error = '';
+                        // // Clear the general error as we can connect
+                        // // to the server just fine
+                        general_error = '';
 
-						// // Update the flash_errors div to notify
-						// // users that there is/are error(s)
-						displayFlashError(Y);
+                        // // Update the flash_errors div to notify
+                        // // users that there is/are error(s)
+                        displayFlashError(Y);
                     }
                 }
             });
@@ -307,23 +307,23 @@ JSViewer = function () {
      *
      * @param {transactionid} The transaction's ID
      * @param {response} The response object.  Only status and statusText
-     * 					are populated when the transaction is terminated
-     * 					due to abort or timeout. The status will read 0,
-     * 					and statusText will return "timeout" or "abort"
-     * 					depending on the mode of termination.
+     *                  are populated when the transaction is terminated
+     *                  due to abort or timeout. The status will read 0,
+     *                  and statusText will return "timeout" or "abort"
+     *                  depending on the mode of termination.
      * @param {argzz} Can be anything you want. Here it is the id
      *                  of the image which we were trying to update
      * @return {null}
      */
-	onDbUpdateFailure = function (transactionid, response, argzz) {
-		// image_errors[argzz[1]] = {general : 'Unable to connect to database'};
-		general_error = 'Unable to connect to database';
+    onDbUpdateFailure = function (transactionid, response, argzz) {
+        // image_errors[argzz[1]] = {general : 'Unable to connect to database'};
+        general_error = 'Unable to connect to database';
 
-		// // Since the 'complete' event of the Ajax handler wasn't
-		// // reached if there is a timeout, run the code to display
-		// // errors here as well
-		displayFlashError(argzz[0]);
-	};
+        // // Since the 'complete' event of the Ajax handler wasn't
+        // // reached if there is a timeout, run the code to display
+        // // errors here as well
+        displayFlashError(argzz[0]);
+    };
 
     /**
      * Iterates through all entries in image_errors and checks if
@@ -334,22 +334,22 @@ JSViewer = function () {
      * @param {Y} Yui3 object
      * @return {null}
      */
-	displayFlashError = function(Y) {
-		var errorCount = 0, i = image_errors.length;
-		while (i--) {
-			if (typeof image_errors[i] !== 'undefined')
-				errorCount++;
-		}
-		var errorString = '';
-		if (errorCount > 0) {
-			errorString = errorCount + (errorCount > 1 ? ' errors ' : ' error ') + 'found';
-		}
-		if (general_error != '') {
-			errorString = general_error + '<br/>' + errorString;
-		}
-		Y.one('#flash_errors').setHTML(errorString);
-	};
-	// // END : image details
+    displayFlashError = function(Y) {
+        var errorCount = 0, i = image_errors.length;
+        while (i--) {
+            if (typeof image_errors[i] !== 'undefined')
+                errorCount++;
+        }
+        var errorString = '';
+        if (errorCount > 0) {
+            errorString = errorCount + (errorCount > 1 ? ' errors ' : ' error ') + 'found';
+        }
+        if (general_error != '') {
+            errorString = general_error + '<br/>' + errorString;
+        }
+        Y.one('#flash_errors').setHTML(errorString);
+    };
+    // // END : image details
 
     log = function (m) {
         if (window.console) {
@@ -444,19 +444,20 @@ JSViewer = function () {
                 .children[1].children[0].getElementsByTagName("tr");
 
             if (e.target.getAttribute('class') == 'hotkey-input') {
-				var used="";
-				if (e.keyCode == 13 || e.keyCode == 87 || e.keyCode == 81) {
-					alert("This keys can't be assigned because is a reserved key!");
-					return;
-				}
-				for (var i = 1; i < rows.length; i++) {
-                	if ( String.fromCharCode(e.keyCode) ==  rows[i].children[3].children[0].value ) {
-						var name = rows[i].children[1].innerHTML;
-						alert("This key can't be assigned because is assigned to " + name);
-						return;
-					}
-				}
-				
+                var used="";
+                if (e.keyCode == 13 || e.keyCode == 87 || e.keyCode == 81) {
+                    document.getElementById(e.target.getAttribute('id')).value = "";
+                    alert("This keys can't be assigned because it is a reserved key!");
+                }
+                for (var i = 1; i < rows.length; i++) {
+                    if ( String.fromCharCode(e.keyCode) ==  rows[i].children[3].children[0].value ) {
+                        var name = rows[i].children[1].innerHTML;
+                        document.getElementById(e.target.getAttribute('id')).value = "";
+                        alert("This key can't be assigned because it is assigned to '" + name +"'!");
+                        return;
+                    }
+                }
+                
                 document.getElementById(e.target.getAttribute('id')).value = String.fromCharCode(e.keyCode);
                 return;
             }
