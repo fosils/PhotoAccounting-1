@@ -438,9 +438,14 @@ JSViewer = function () {
         return function (e) {
             var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                 .children[1].children[0].getElementsByTagName("tr");
-            var hotkeyAssigned = false;
 
             if (e.target.getAttribute('class') == 'hotkey-input' ) {
+                if ( e.keyCode == 13 || e.keyCode == 87 || e.keyCode == 81 ) {
+                        alert("This key can't be assigned because it is a reserved key!");
+                        e.preventDefault();
+                        return false;
+                }
+
                 for (var i = 1; i < rows.length; i++) {
                     if ( e.keyCode == rows[i].children[3].children[0].getAttribute('data')
                          && e.target.getAttribute('id') != rows[i].children[3].children[0].getAttribute('id') ) {
@@ -448,14 +453,11 @@ JSViewer = function () {
                         var name = rows[i].children[1].innerHTML;
                         alert("This key can't be assigned because it is assigned to '" + name +"'!");
                         e.preventDefault();
-                        hotkeyAssigned = true;
                         return false;
                     }
                 }
-                if (!hotkeyAssigned) {
-                    document.getElementById(e.target.getAttribute('id')).setAttribute('data', e.keyCode);
-                    document.getElementById(e.target.getAttribute('id')).value = "";
-                }
+                document.getElementById(e.target.getAttribute('id')).setAttribute('data', e.keyCode);
+                document.getElementById(e.target.getAttribute('id')).value = "";
                 return true;
             }
 
@@ -511,35 +513,25 @@ JSViewer = function () {
 
     keyPressHandler = function() {
         return function (e) {
-             /* if (e.target.getAttribute('class') == 'hotkey-input') {
+            if (e.target.id == "jsv_text") {
                 var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                     .children[1].children[0].getElementsByTagName("tr");
 
                 if ( e.keyCode == 13 ||
                     String.fromCharCode(e.keyCode).toLowerCase() == 'q' ||
                     String.fromCharCode(e.keyCode).toLowerCase() == 'w') {
-                    alert("This keys can't be assigned because it is a reserved key!");
                     e.preventDefault();
-                    return false
-                }
-
-                for (var i = 1; i < rows.length; i++) {
-                    if ( String.fromCharCode(e.keyCode).toLowerCase() == rows[i].children[3].children[0].value.toLowerCase()
-                         && e.target.getAttribute('id') != rows[i].children[3].children[0].getAttribute('id') ) {
-                        var name = rows[i].children[1].innerHTML;
-                        alert("This key can't be assigned because it is assigned to '" + name +"'!");
-                        e.preventDefault();
-                        return false;
+                    return false;
+                } else if {
+                    for (var i = 1; i < rows.length; i++) {
+                        if ( e.keyCode == rows[i].children[3].children[0].getAttribute('data') {
+                            e.preventDefault();
+                            return false;
+                        }
                     }
                 }
-                document.getElementById(e.target.getAttribute('id')).value = "";
-            } */
-            /* if(e.target.getAttribute('id') == "jsv_text" ||
-                e.target.getAttribute('class') == 'hotkey-input') {
-            } else {
-                e.preventDefault();
-            } */
-        };
+            }
+        }
     };
 
     /**
