@@ -33,6 +33,7 @@ span.field_error{
 }
 
 span.account_name{
+	padding-left: 5px;
 	color:black;
 	font-size:normal;
 }
