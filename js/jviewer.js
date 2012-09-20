@@ -446,7 +446,7 @@ JSViewer = function () {
 
             var a = Array();
             for (var i = 1; i < rows.length; i++) {
-                if ( String.fromCharCode(e.keyCode) ==  rows[i].children[3].children[0].value ) {
+                if ( String.fromCharCode(e.keyCode) ==  rows[i].children[3].children[0].getAttribute('data') ) {
                     document.getElementById('jsv_account').value = rows[i].children[0].innerHTML;
                     document.getElementById('account_name').innerHTML = rows[i].children[1].innerHTML;
                     break;
@@ -488,7 +488,7 @@ JSViewer = function () {
 
             var a = Array();
             for (var i = 1; i < rows.length; i++) {
-                if ( String.fromCharCode(e.keyCode) ==  rows[i].children[3].children[0].value ) {
+                if ( String.fromCharCode(e.keyCode) ==  rows[i].children[3].children[0].getAttribute('data') ) {
                     document.getElementById('account_name').innerHTML = "";
                     showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
                     break;
@@ -512,7 +512,7 @@ JSViewer = function () {
                 }
 
                 for (var i = 1; i < rows.length; i++) {
-                    if ( String.fromCharCode(e.keyCode) == rows[i].children[3].children[0].value
+                    if ( String.fromCharCode(e.keyCode) == rows[i].children[3].children[0].getAttribute('data')
                          && e.target.getAttribute('id') != rows[i].children[3].children[0].getAttribute('id') ) {
                         var name = rows[i].children[1].innerHTML;
                         alert("This key can't be assigned because it is assigned to '" + name +"'!");
@@ -521,6 +521,7 @@ JSViewer = function () {
                     }
                 }    
                 document.getElementById(e.target.getAttribute('id')).value = "";
+                document.getElementById(e.target.getAttribute('id')).setAttribute('data', e.keyCode);
             }
         };
     };
