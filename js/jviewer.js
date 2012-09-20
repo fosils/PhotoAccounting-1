@@ -452,7 +452,7 @@ JSViewer = function () {
                     }
                 }
                 if (!hotkeyAssigned) {
-                    document.getElementById(e.target.getAttribute('id')).setAttibute('data', e.keyCode);
+                    document.getElementById(e.target.getAttribute('id')).setAttribute('data', e.keyCode);
                     document.getElementById(e.target.getAttribute('id')).value = "";
                 }
                 return true;
