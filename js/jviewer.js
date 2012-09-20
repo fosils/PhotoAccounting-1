@@ -462,8 +462,10 @@ JSViewer = function () {
             }
 
             var a = Array();
+            document.hotkey = false;
             for (var i = 1; i < rows.length; i++) {
                 if ( e.keyCode ==  rows[i].children[3].children[0].getAttribute('data') ) {
+                    document.hotkey = true;
                     document.getElementById('jsv_account').value = rows[i].children[0].innerHTML;
                     document.getElementById('account_name').innerHTML = rows[i].children[1].innerHTML;
                     break;
@@ -474,9 +476,11 @@ JSViewer = function () {
             case 13: // enter
             case 87: // w (next)
                 showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
+                document.hotkey = true;
                 break;
             case 81: //q (previous)
                 showPrevImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
+                document.hotkey = true;
                 break;
             }
         };
@@ -513,6 +517,7 @@ JSViewer = function () {
 
     keyPressHandler = function() {
         return function (e) {
+            /*
             if (e.target.getAttribute('id') == "jsv_account") {
                 var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                     .children[1].children[0].getElementsByTagName("tr");
@@ -530,6 +535,12 @@ JSViewer = function () {
                         }
                     }
                 }
+            }
+            */
+            if (document.hotkey == true) {
+                e.preventDefault();
+                document.hotkey = false;
+                return false;
             }
         }
     };
