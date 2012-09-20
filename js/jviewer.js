@@ -455,12 +455,14 @@ JSViewer = function () {
                         var name = rows[i].children[1].innerHTML;
                         alert("This key can't be assigned because it is assigned to '" + name +"'!");
                         e.preventDefault();
+                        document.newHotkey = -1;
                         return false;
+                    } else if (e.target.getAttribute('id') != rows[i].children[3].children[0].getAttribute('id')) {
+                        document.newHotkey = i;
                     }
                 }
                 document.getElementById(e.target.getAttribute('id')).setAttribute('data', e.keyCode);
                 document.getElementById(e.target.getAttribute('id')).value = "";
-                document.newHotkey = true;
                 return true;
             }
 
