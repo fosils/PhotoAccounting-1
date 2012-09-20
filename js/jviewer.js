@@ -436,18 +436,31 @@ JSViewer = function () {
      */
     keyDownHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
-            if (e.target.getAttribute('id') == "jsv_text" ||
-                e.target.getAttribute('class') == 'hotkey-input' ) {
-                e.preventDefault();
-                return;
-            }
-
             var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                 .children[1].children[0].getElementsByTagName("tr");
+            var hotkey = false;
+
+            if (e.target.getAttribute('class') == 'hotkey-input' ) {
+                for (var i = 1; i < rows.length; i++) {
+                    if ( e.keyCode == rows[i].children[3].children[0].getAttribute('data')
+                         && e.target.getAttribute('id') != rows[i].children[3].children[0].getAttribute('id') ) {
+                        var name = rows[i].children[1].innerHTML;
+                        alert("This key can't be assigned because it is assigned to '" + name +"'!");
+                        e.preventDefault();
+                        hotkey = true;
+                        return false;
+                    }
+                }
+                if (hotkey == true) {
+                    document.getElementById(e.target.getAttribute('id')).setAttibute('data', e.keyCode);
+                    document.getElementById(e.target.getAttribute('id')).value = "";
+                }
+                return true;
+            }
 
             var a = Array();
             for (var i = 1; i < rows.length; i++) {
-                if ( String.fromCharCode(e.keyCode).toLowerCase() ==  rows[i].children[3].children[0].value.toLowerCase() ) {
+                if ( e.keyCode ==  rows[i].children[3].children[0].getAttribute('data') ) {
                     document.getElementById('jsv_account').value = rows[i].children[0].innerHTML;
                     document.getElementById('account_name').innerHTML = rows[i].children[1].innerHTML;
                     break;
@@ -477,10 +490,8 @@ JSViewer = function () {
      */
     keyUpHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
-            if(e.target.getAttribute('id') == "jsv_text" ||
-                e.target.getAttribute('class') == 'hotkey-input') {
-                e.preventDefault();
-                return;
+            if(e.target.getAttribute('class') == 'hotkey-input') {
+                return false;
             }
 
             var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
@@ -488,7 +499,7 @@ JSViewer = function () {
 
             var a = Array();
             for (var i = 1; i < rows.length; i++) {
-                if ( String.fromCharCode(e.keyCode).toLowerCase() ==  rows[i].children[3].children[0].value.toLowerCase() ) {
+                if ( e.keyCode ==  rows[i].children[3].children[0].getAttribute('data') ) {
                     document.getElementById('account_name').innerHTML = "";
                     showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
                     break;
@@ -522,11 +533,11 @@ JSViewer = function () {
                 }
                 document.getElementById(e.target.getAttribute('id')).value = "";
             } */
-            if(e.target.getAttribute('id') == "jsv_text" ||
+            /* if(e.target.getAttribute('id') == "jsv_text" ||
                 e.target.getAttribute('class') == 'hotkey-input') {
             } else {
                 e.preventDefault();
-            }
+            } */
         };
     };
 
