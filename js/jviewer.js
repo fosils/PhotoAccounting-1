@@ -7,7 +7,7 @@ JSViewer = function () {
     // Globals
     var my_key_codes, my_image_count, current_image_index,
         $, renderImage, showPrevImage, showNextImage,
-        keyDownHandler, keyUpHandler, setKeyboardHandlers,
+        keyDownHandler, keyUpHandler, keyPressHandler, setKeyboardHandlers,
         toggleArrows, addArrows,
         loadImage, images,
         cacheGroup, log,
