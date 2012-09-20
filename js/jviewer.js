@@ -502,11 +502,15 @@ JSViewer = function () {
     keyPressHandler = function() {
         return function (e) {
             if (e.target.getAttribute('class') == 'hotkey-input') {
+                var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
+                    children[1].children[0].getElementsByTagName("tr");
+
                 if (e.keyCode == 13 || e.keyCode == 87 || e.keyCode == 81) {
                     document.getElementById(e.target.getAttribute('id')).value = "";
                     alert("This keys can't be assigned because it is a reserved key!");
                     return false
                 }
+
                 for (var i = 1; i < rows.length; i++) {
                     if ( String.fromCharCode(e.keyCode) == rows[i].children[3].children[0].value
                          && e.target.getAttribute('id') != rows[i].children[3].children[0].getAttribute('id') ) {
