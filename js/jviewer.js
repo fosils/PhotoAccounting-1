@@ -457,7 +457,7 @@ JSViewer = function () {
                         e.preventDefault();
                         document.newHotkey = -1;
                         return false;
-                    } else if (e.target.getAttribute('id') != rows[i].children[3].children[0].getAttribute('id')) {
+                    } else if (e.target.getAttribute('id') == rows[i].children[3].children[0].getAttribute('id')) {
                         document.newHotkey = i;
                     }
                 }
