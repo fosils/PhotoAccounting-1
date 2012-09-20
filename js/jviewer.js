@@ -508,6 +508,7 @@ JSViewer = function () {
                 if (e.keyCode == 13 || e.keyCode == 87 || e.keyCode == 81) {
                     document.getElementById(e.target.getAttribute('id')).value = "";
                     alert("This keys can't be assigned because it is a reserved key!");
+                    e.preventDefault();
                     return false
                 }
 
@@ -517,6 +518,7 @@ JSViewer = function () {
                         var name = rows[i].children[1].innerHTML;
                         document.getElementById(e.target.getAttribute('id')).value = "";
                         alert("This key can't be assigned because it is assigned to '" + name +"'!");
+                        e.preventDefault();
                         return false;
                     }
                 
