@@ -32,6 +32,11 @@ span.field_error{
 	font-size:small;
 }
 
+span.account_name{
+	color:black;
+	font-size:normal;
+}
+
 div#flash_errors {
 	height:30px;
 	padding-top:3px;

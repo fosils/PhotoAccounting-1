@@ -452,7 +452,7 @@ JSViewer = function () {
             for (var i = 1; i < rows.length; i++) {
                 if ( String.fromCharCode(e.keyCode) ==  rows[i].children[3].children[0].value ) {
                     document.getElementById('jsv_account').value = rows[i].children[0].innerHTML;
-                    document.getElementById('error_account').innerHTML = rows[i].children[1].innerHTML;
+                    document.getElementById('account_name').innerHTML = rows[i].children[1].innerHTML;
                     break;
                 }
             }
@@ -493,7 +493,7 @@ JSViewer = function () {
             var a = Array();
             for (var i = 1; i < rows.length; i++) {
                 if ( String.fromCharCode(e.keyCode) ==  rows[i].children[3].children[0].value ) {
-                    document.getElementById('error_account').innerHTML = "";
+                    document.getElementById('account_name').innerHTML = "";
                     showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
                     break;
                 }

@@ -130,8 +130,9 @@ $accountImage->updateFileNames($files);
 				</li>
 				<li><label for="jsv_account">Account</label>
 					<div>
-						<input type="text" name="jsv_account" id="jsv_account" size="10" /><span
-							id="error_account" class="field_error"></span>
+						<input type="text" name="jsv_account" id="jsv_account" size="10" />
+						<span id="error_account" class="field_error"></span>
+						<span id="account_name" class="account_name"></span>
 					</div>
 				</li>
 				<li><label for="jsv_amount">Amount</label>
