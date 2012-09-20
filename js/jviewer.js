@@ -513,7 +513,7 @@ JSViewer = function () {
 
     keyPressHandler = function() {
         return function (e) {
-            if (e.target.id == "jsv_text") {
+            if (e.target.id == "jsv_account") {
                 var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                     .children[1].children[0].getElementsByTagName("tr");
 
@@ -522,7 +522,7 @@ JSViewer = function () {
                     String.fromCharCode(e.keyCode).toLowerCase() == 'w') {
                     e.preventDefault();
                     return false;
-                } else if {
+                } else {
                     for (var i = 1; i < rows.length; i++) {
                         if ( e.keyCode == rows[i].children[3].children[0].getAttribute('data') {
                             e.preventDefault();
