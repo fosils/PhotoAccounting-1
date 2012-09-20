@@ -450,7 +450,8 @@ JSViewer = function () {
                     alert("This keys can't be assigned because it is a reserved key!");
                 }
                 for (var i = 1; i < rows.length; i++) {
-                    if ( String.fromCharCode(e.keyCode) ==  rows[i].children[3].children[0].value ) {
+                    if ( String.fromCharCode(e.keyCode) == rows[i].children[3].children[0].value
+                         && e.target.getAttribute('id') != rows[i].children[3].children[0].getAttribute('id') ) {
                         var name = rows[i].children[1].innerHTML;
                         document.getElementById(e.target.getAttribute('id')).value = "";
                         alert("This key can't be assigned because it is assigned to '" + name +"'!");
