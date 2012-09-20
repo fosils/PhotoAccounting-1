@@ -513,7 +513,7 @@ JSViewer = function () {
 
     keyPressHandler = function() {
         return function (e) {
-            if (e.target.id == "jsv_account") {
+            if (e.target.getAttribute('id') == "jsv_account") {
                 var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                     .children[1].children[0].getElementsByTagName("tr");
 
