@@ -448,6 +448,7 @@ JSViewer = function () {
                 if (e.keyCode == 13 || e.keyCode == 87 || e.keyCode == 81) {
                     document.getElementById(e.target.getAttribute('id')).value = "";
                     alert("This keys can't be assigned because it is a reserved key!");
+                    return false
                 }
                 for (var i = 1; i < rows.length; i++) {
                     if ( String.fromCharCode(e.keyCode) == rows[i].children[3].children[0].value
@@ -455,7 +456,7 @@ JSViewer = function () {
                         var name = rows[i].children[1].innerHTML;
                         document.getElementById(e.target.getAttribute('id')).value = "";
                         alert("This key can't be assigned because it is assigned to '" + name +"'!");
-                        return;
+                        return false;
                     }
                 }
                 
