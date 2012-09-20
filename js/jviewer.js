@@ -444,6 +444,7 @@ JSViewer = function () {
                 for (var i = 1; i < rows.length; i++) {
                     if ( e.keyCode == rows[i].children[3].children[0].getAttribute('data')
                          && e.target.getAttribute('id') != rows[i].children[3].children[0].getAttribute('id') ) {
+                        document.getElementById(e.target.getAttribute('id')).value = " ";
                         var name = rows[i].children[1].innerHTML;
                         alert("This key can't be assigned because it is assigned to '" + name +"'!");
                         e.preventDefault();
