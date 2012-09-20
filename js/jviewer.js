@@ -436,7 +436,7 @@ JSViewer = function () {
      */
     keyDownHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
-            if (e.target.getAttribute('id') == "jsv_text" || 
+            if (e.target.getAttribute('id') == "jsv_text" ||
                 e.target.getAttribute('class') == 'hotkey-input' ) {
                 return;
             }
@@ -505,9 +505,9 @@ JSViewer = function () {
                 var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                     .children[1].children[0].getElementsByTagName("tr");
 
-                if ( e.keyCode == 13 || 
-                    String.fromCharCode(e.keyCode).toLowerCase == 'q' || 
-                    String.fromCharCode(e.keyCode).toLowerCase == 'w') {
+                if ( e.keyCode == 13 ||
+                    String.fromCharCode(e.keyCode).toLowerCase() == 'q' ||
+                    String.fromCharCode(e.keyCode).toLowerCase() == 'w') {
                     alert("This keys can't be assigned because it is a reserved key!");
                     e.preventDefault();
                     return false
@@ -521,7 +521,7 @@ JSViewer = function () {
                         e.preventDefault();
                         return false;
                     }
-                }    
+                }
                 document.getElementById(e.target.getAttribute('id')).value = "";
             }
         };
