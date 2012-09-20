@@ -524,7 +524,7 @@ JSViewer = function () {
                     return false;
                 } else {
                     for (var i = 1; i < rows.length; i++) {
-                        if ( e.keyCode == rows[i].children[3].children[0].getAttribute('data') {
+                        if ( e.keyCode == rows[i].children[3].children[0].getAttribute('data') ) {
                             e.preventDefault();
                             return false;
                         }
