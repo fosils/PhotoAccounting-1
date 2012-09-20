@@ -439,6 +439,8 @@ JSViewer = function () {
             var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                 .children[1].children[0].getElementsByTagName("tr");
 
+            document.newHotkey = -1;
+
             if (e.target.getAttribute('class') == 'hotkey-input' ) {
                 if ( e.keyCode == 13 || e.keyCode == 87 || e.keyCode == 81 ) {
                         alert("This key can't be assigned because it is a reserved key!");
@@ -458,6 +460,7 @@ JSViewer = function () {
                 }
                 document.getElementById(e.target.getAttribute('id')).setAttribute('data', e.keyCode);
                 document.getElementById(e.target.getAttribute('id')).value = "";
+                document.newHotkey = true;
                 return true;
             }
 
@@ -465,7 +468,7 @@ JSViewer = function () {
             document.hotkey = false;
             for (var i = 1; i < rows.length; i++) {
                 if ( e.keyCode ==  rows[i].children[3].children[0].getAttribute('data') ) {
-                    document.hotkey = true;
+                    document.hotkey = i;
                     document.getElementById('jsv_account').value = rows[i].children[0].innerHTML;
                     document.getElementById('account_name').innerHTML = rows[i].children[1].innerHTML;
                     break;
@@ -497,12 +500,17 @@ JSViewer = function () {
      */
     keyUpHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
-            if(e.target.getAttribute('class') == 'hotkey-input') {
-                return false;
-            }
-
             var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                 .children[1].children[0].getElementsByTagName("tr");
+
+            if(e.target.getAttribute('class') == 'hotkey-input') {
+                if (document.newHotkey != -1) {
+                    if (document.newHotkey < rows.length - 1) {
+                        rows[document.newHotkey + 1].children[3].children[0].focus();
+                    }
+                }
+                return false;
+            }
 
             var a = Array();
             for (var i = 1; i < rows.length; i++) {
@@ -517,26 +525,6 @@ JSViewer = function () {
 
     keyPressHandler = function() {
         return function (e) {
-            /*
-            if (e.target.getAttribute('id') == "jsv_account") {
-                var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
-                    .children[1].children[0].getElementsByTagName("tr");
-
-                if ( e.keyCode == 13 ||
-                    String.fromCharCode(e.keyCode).toLowerCase() == 'q' ||
-                    String.fromCharCode(e.keyCode).toLowerCase() == 'w') {
-                    e.preventDefault();
-                    return false;
-                } else {
-                    for (var i = 1; i < rows.length; i++) {
-                        if ( e.keyCode == rows[i].children[3].children[0].getAttribute('data') ) {
-                            e.preventDefault();
-                            return false;
-                        }
-                    }
-                }
-            }
-            */
             if (document.hotkey == true) {
                 e.preventDefault();
                 document.hotkey = false;
