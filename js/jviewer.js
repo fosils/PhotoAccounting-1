@@ -440,13 +440,26 @@ JSViewer = function () {
                 return;
             }
 
+            var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
+                .children[1].children[0].getElementsByTagName("tr");
+
             if (e.target.getAttribute('class') == 'hotkey-input') {
+				var used="";
+				if (e.keyCode == 13 || e.keyCode == 87 || e.keyCode == 81) {
+					alert("This keys can't be assigned because is a reserved key!");
+					return;
+				}
+				for (var i = 1; i < rows.length; i++) {
+                	if ( String.fromCharCode(e.keyCode) ==  rows[i].children[3].children[0].value ) {
+						var name = rows[i].children[1].innerHTML;
+						alert("This key can't be assigned because is assigned to " + name);
+						return;
+					}
+				}
+				
                 document.getElementById(e.target.getAttribute('id')).value = String.fromCharCode(e.keyCode);
                 return;
             }
-
-            var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
-                .children[1].children[0].getElementsByTagName("tr");
 
             var a = Array();
             for (var i = 1; i < rows.length; i++) {
