@@ -470,7 +470,7 @@ JSViewer = function () {
             document.hotkey = false;
             for (var i = 1; i < rows.length; i++) {
                 if ( e.keyCode ==  rows[i].children[3].children[0].getAttribute('data') ) {
-                    document.hotkey = i;
+                    document.hotkey = true;
                     document.getElementById('jsv_account').value = rows[i].children[0].innerHTML;
                     document.getElementById('account_name').innerHTML = rows[i].children[1].innerHTML;
                     break;
