@@ -443,7 +443,7 @@ JSViewer = function () {
 
             if (e.target.getAttribute('class') == 'hotkey-input' ) {
                 if ( document.reservedKeys.indexOf(e.keyCode) != -1 || e.keyCode == 87 || e.keyCode == 81 ) {
-                        e.target.next().innerHTML = "This key can't be assigned because it is a reserved key!";
+                        document.getElementById(e.target.getAttribute('id')).parentNode.children[1].innerHTML = "This key can't be assigned because it is a reserved key!";
                         e.preventDefault();
                         return false;
                 }
@@ -453,7 +453,7 @@ JSViewer = function () {
                          && e.target.getAttribute('id') != rows[i].children[3].children[0].getAttribute('id') ) {
                         document.getElementById(e.target.getAttribute('id')).value = " ";
                         var name = rows[i].children[1].innerHTML;
-                        e.target.next().innerHTML = "This key can't be assigned because it is assigned to '" + name + "'!";
+                        document.getElementById(e.target.getAttribute('id')).parentNode.children[1].innerHTML = "This key can't be assigned because it is assigned to '" + name + "'!";
                         e.preventDefault();
                         document.newHotkey = -1;
                         return false;
@@ -462,7 +462,7 @@ JSViewer = function () {
                     }
                 }
                 document.getElementById(e.target.getAttribute('id')).setAttribute('data', e.keyCode);
-                e.target.next().innerHTML = "";
+                document.getElementById(e.target.getAttribute('id')).parentNode.children[1].innerHTML = "";
                 document.getElementById(e.target.getAttribute('id')).value = "";
                 return true;
             }
