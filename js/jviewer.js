@@ -439,7 +439,7 @@ JSViewer = function () {
             var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                 .children[1].children[0].getElementsByTagName("tr");
 
-            document.newHotkey = false;
+            document.newHotkey = -1;
 
             if (e.target.getAttribute('class') == 'hotkey-input' ) {
                 if ( e.keyCode == 13 || e.keyCode == 87 || e.keyCode == 81 ) {
@@ -455,10 +455,10 @@ JSViewer = function () {
                         var name = rows[i].children[1].innerHTML;
                         alert("This key can't be assigned because it is assigned to '" + name +"'!");
                         e.preventDefault();
-                        document.newHotkey = false;
+                        document.newHotkey = -1;
                         return false;
                     } else if (e.target.getAttribute('id') == rows[i].children[3].children[0].getAttribute('id')) {
-                        document.newHotkey = true;
+                        document.newHotkey = i;
                     }
                 }
                 document.getElementById(e.target.getAttribute('id')).setAttribute('data', e.keyCode);
@@ -506,8 +506,8 @@ JSViewer = function () {
                 .children[1].children[0].getElementsByTagName("tr");
 
             if(e.target.getAttribute('class') == 'hotkey-input') {
-                if (document.newHotkey) {
-                    document.body.focus();
+                if (document.newHotkey != -1) {
+                    rows[document.newHotkey + 1].children[3].children[0].blur();
                 }
                 return false;
             }
