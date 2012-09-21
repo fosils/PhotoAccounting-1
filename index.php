@@ -98,8 +98,10 @@ $accountImage->updateFileNames($files);
 		16, // shift
 		17, // ctrl
 		18, // alt
-		45,	// insert
-		46  // delete
+		32, // space
+		45, // insert
+		46, // delete
+
 	];
 
 	JSViewer.start(<?php echo count($files); ?>, <?php echo POST_CACHE; ?>, <?php echo PRE_CACHE; ?>, <?php echo isset($_GET['imageID'])?$_GET['imageID']:0; ?>,my_codes);
