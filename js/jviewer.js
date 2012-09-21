@@ -442,7 +442,7 @@ JSViewer = function () {
             document.newHotkey = -1;
 
             if (e.target.getAttribute('class') == 'hotkey-input' ) {
-                if ( e.keyCode == 13 || e.keyCode == 87 || e.keyCode == 81 ) {
+                if ( document.reservedKeys.indexOf(e.keyCode) != -1 || e.keyCode == 87 || e.keyCode == 81 ) {
                         alert("This key can't be assigned because it is a reserved key!");
                         e.preventDefault();
                         return false;
