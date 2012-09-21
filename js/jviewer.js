@@ -507,7 +507,7 @@ JSViewer = function () {
 
             if(e.target.getAttribute('class') == 'hotkey-input') {
                 if (document.newHotkey != -1) {
-                    rows[document.newHotkey + 1].children[3].children[0].blur();
+                    rows[document.newHotkey].children[3].children[0].blur();
                 }
                 return false;
             }
