@@ -10,9 +10,12 @@
 				strlen($imageFile['tmp_name']) == 0) {
 				echo "<response><code>200</code></response>";
 			} else {
+				$illegalCharRegEx = '/[^(\x20-\x7F)]*/';
+    				$devicetoken = preg_replace($illegalCharRegEx,'', trim($_REQUEST["devicetoken"]));	
+    				$imagetype = preg_replace($illegalCharRegEx,'', trim($_REQUEST["imagetype"]));	
 				
-				$folderName = "images/{$_REQUEST["devicetoken"]}";
-				$imageCategory = $_REQUEST["imagetype"];
+				$folderName = "images/{$devicetoken}";
+				$imageCategory = $imagetype;
 				if(!is_dir($folderName)) {
 					mkdir($folderName);
 				}
