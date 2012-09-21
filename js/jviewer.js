@@ -507,7 +507,7 @@ JSViewer = function () {
 
             if(e.target.getAttribute('class') == 'hotkey-input') {
                 if (document.newHotkey) {
-                    document.getElementById('jsv_account').focus();
+                    document.body.focus();
                 }
                 return false;
             }
