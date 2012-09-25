@@ -524,6 +524,11 @@ JSViewer = function () {
         };
     };
 
+    /**
+     * Handles a keypress event
+     *
+     * @return {null}
+     */
     keyPressHandler = function() {
         return function (e) {
             if (document.hotkey == true) {
