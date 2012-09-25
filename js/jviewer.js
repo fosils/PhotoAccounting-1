@@ -504,6 +504,7 @@ JSViewer = function () {
      */
     keyUpHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
+            if(document.activeElement.id == "jsv_text") return;
             var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                 .children[1].children[0].getElementsByTagName("tr");
 
