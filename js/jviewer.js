@@ -7,7 +7,7 @@ JSViewer = function () {
     // Globals
     var my_key_codes, my_image_count, current_image_index,
         $, renderImage, showPrevImage, showNextImage,
-        keyDownHandler, keyUpHandler, setKeyboardHandlers,
+        keyDownHandler, keyUpHandler, keyPressHandler, setKeyboardHandlers,
         toggleArrows, addArrows,
         loadImage, images,
         cacheGroup, log,
@@ -96,7 +96,7 @@ JSViewer = function () {
             log('skipping database loading of image id ' + imageID);
             return;
         }
-        
+
         // 3) image does not exists i.e. pressing 'q' at the first image or 'w' at the last image
         if (imageID < 0 || imageID > my_image_count) {
             log('skipping database loading of image id ' + imageID);
@@ -158,7 +158,7 @@ JSViewer = function () {
             Y.one('#error_amount').setHTML(errors.amount);
             Y.one('#error_account').setHTML(errors.account);
             Y.one('#error_offset_account').setHTML(errors.offset_account);
-            
+
             // // The next one is a general error not related to any field
             Y.one('#error_general').setHTML(errors.general);
         } else {
@@ -218,12 +218,12 @@ JSViewer = function () {
             obj.offset_account = offset_account;
             image_details[image_id] = obj;
 
-			// Subscribe function 'onDbUpdateFailure' to "io.failure" i.e. timeout,
-			// passing it Y & the affected image id when that happens 
-			Y.on('io:failure', onDbUpdateFailure, Y, 
-				// 'Transaction Failed'
-				[Y, image_id]
-			);
+            // Subscribe function 'onDbUpdateFailure' to "io.failure" i.e. timeout,
+            // passing it Y & the affected image id when that happens
+            Y.on('io:failure', onDbUpdateFailure, Y,
+                // 'Transaction Failed'
+                [Y, image_id]
+            );
 
             Y.io("php/proxy.php?function=set_image_detail", {
                 // // this is a post
@@ -275,21 +275,21 @@ JSViewer = function () {
                                 populateImageDetail(Y, obj);
                             }
                             */
-        
+
                             // Remove its errors
                             delete image_errors[image_id];
-        
+
                             // Remove update restriction
                             delete restrict_db_update[image_id];
                        }
 
-						// // Clear the general error as we can connect 
-						// // to the server just fine
-						general_error = '';
-						
-						// // Update the flash_errors div to notify
-						// // users that there is/are error(s)
-						displayFlashError(Y);
+                        // // Clear the general error as we can connect
+                        // // to the server just fine
+                        general_error = '';
+
+                        // // Update the flash_errors div to notify
+                        // // users that there is/are error(s)
+                        displayFlashError(Y);
                     }
                 }
             });
@@ -298,58 +298,58 @@ JSViewer = function () {
     };
 
     /**
-     * Handles storage of errors from timeouts arising from example 
+     * Handles storage of errors from timeouts arising from example
      * when the server is unreachable when saving an image's detail.
-     * 
+     *
      * The customer for this project actually has a test case, where he
      * disconnects his PC from LAN and expects the app to inform him
      * that the database update has failed.
      *
      * @param {transactionid} The transaction's ID
-     * @param {response} The response object.  Only status and statusText 
-     * 					are populated when the transaction is terminated 
-     * 					due to abort or timeout. The status will read 0, 
-     * 					and statusText will return "timeout" or "abort" 
-     * 					depending on the mode of termination.
-     * @param {argzz} Can be anything you want. Here it is the id 
+     * @param {response} The response object.  Only status and statusText
+     *                  are populated when the transaction is terminated
+     *                  due to abort or timeout. The status will read 0,
+     *                  and statusText will return "timeout" or "abort"
+     *                  depending on the mode of termination.
+     * @param {argzz} Can be anything you want. Here it is the id
      *                  of the image which we were trying to update
      * @return {null}
      */
-	onDbUpdateFailure = function (transactionid, response, argzz) {
-		// image_errors[argzz[1]] = {general : 'Unable to connect to database'};
-		general_error = 'Unable to connect to database';
-		
-		// // Since the 'complete' event of the Ajax handler wasn't 
-		// // reached if there is a timeout, run the code to display 
-		// // errors here as well
-		displayFlashError(argzz[0]);
-	};
+    onDbUpdateFailure = function (transactionid, response, argzz) {
+        // image_errors[argzz[1]] = {general : 'Unable to connect to database'};
+        general_error = 'Unable to connect to database';
+
+        // // Since the 'complete' event of the Ajax handler wasn't
+        // // reached if there is a timeout, run the code to display
+        // // errors here as well
+        displayFlashError(argzz[0]);
+    };
 
     /**
      * Iterates through all entries in image_errors and checks if
      * it contains valid errors i.e. not empty
-     * 
+     *
      * If any is found, then the flash error message is shown.
      *
      * @param {Y} Yui3 object
      * @return {null}
      */
-	displayFlashError = function(Y) {
-		var errorCount = 0, i = image_errors.length;
-		while (i--) {
-			if (typeof image_errors[i] !== 'undefined')
-				errorCount++;
-		}
-		var errorString = '';
-		if (errorCount > 0) {
-			errorString = errorCount + (errorCount > 1 ? ' errors ' : ' error ') + 'found';
-		}
-		if (general_error != '') {
-			errorString = general_error + '<br/>' + errorString;
-		}
-		Y.one('#flash_errors').setHTML(errorString);
-	};
-	// // END : image details
+    displayFlashError = function(Y) {
+        var errorCount = 0, i = image_errors.length;
+        while (i--) {
+            if (typeof image_errors[i] !== 'undefined')
+                errorCount++;
+        }
+        var errorString = '';
+        if (errorCount > 0) {
+            errorString = errorCount + (errorCount > 1 ? ' errors ' : ' error ') + 'found';
+        }
+        if (general_error != '') {
+            errorString = general_error + '<br/>' + errorString;
+        }
+        Y.one('#flash_errors').setHTML(errorString);
+    };
+    // // END : image details
 
     log = function (m) {
         if (window.console) {
@@ -437,15 +437,57 @@ JSViewer = function () {
     keyDownHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
             if(document.activeElement.id == "jsv_text") return;
-            e.preventDefault();
+            var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
+                .children[1].children[0].getElementsByTagName("tr");
+
+            document.newHotkey = -1;
+
+            if (e.target.getAttribute('class') == 'hotkey-input' ) {
+                if ( document.reservedKeys.indexOf(e.keyCode) != -1 || e.keyCode == 87 || e.keyCode == 81 ) {
+                        document.getElementById(e.target.getAttribute('id')).parentNode.children[1].innerHTML = "This key can't be assigned because it is a reserved key!";
+                        e.preventDefault();
+                        return false;
+                }
+
+                for (var i = 1; i < rows.length; i++) {
+                    if ( e.keyCode == rows[i].children[3].children[0].getAttribute('data')
+                         && e.target.getAttribute('id') != rows[i].children[3].children[0].getAttribute('id') ) {
+                        document.getElementById(e.target.getAttribute('id')).value = " ";
+                        var name = rows[i].children[1].innerHTML;
+                        document.getElementById(e.target.getAttribute('id')).parentNode.children[1].innerHTML = "This key can't be assigned because it is assigned to '" + name + "'!";
+                        e.preventDefault();
+                        document.newHotkey = -1;
+                        return false;
+                    } else if (e.target.getAttribute('id') == rows[i].children[3].children[0].getAttribute('id')) {
+                        document.newHotkey = i;
+                    }
+                }
+                document.getElementById(e.target.getAttribute('id')).setAttribute('data', e.keyCode);
+                document.getElementById(e.target.getAttribute('id')).parentNode.children[1].innerHTML = "";
+                document.getElementById(e.target.getAttribute('id')).value = "";
+                return true;
+            }
+
+            var a = Array();
+            document.hotkey = false;
+            for (var i = 1; i < rows.length; i++) {
+                if ( e.keyCode ==  rows[i].children[3].children[0].getAttribute('data') ) {
+                    document.hotkey = true;
+                    document.getElementById('jsv_account').value = rows[i].children[0].innerHTML;
+                    document.getElementById('account_name').innerHTML = rows[i].children[1].innerHTML;
+                    break;
+                }
+            }
 
             switch (e.keyCode) {
             case 13: // enter
             case 87: // w (next)
                 showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
+                document.hotkey = true;
                 break;
             case 81: //q (previous)
                 showPrevImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
+                document.hotkey = true;
                 break;
             }
         };
@@ -463,14 +505,44 @@ JSViewer = function () {
     keyUpHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
             if(document.activeElement.id == "jsv_text") return;
-            e.preventDefault();
+            var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
+                .children[1].children[0].getElementsByTagName("tr");
 
-            var valas = my_key_codes[String.fromCharCode(e.keyCode).toLowerCase()];
+            if(e.target.getAttribute('class') == 'hotkey-input') {
+                if (document.newHotkey != -1) {
+                    rows[document.newHotkey].children[3].children[0].blur();
+                }
+                return false;
+            }
 
-            if (valas) {
-                showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
+            var a = Array();
+            for (var i = 1; i < rows.length; i++) {
+                if ( e.keyCode ==  rows[i].children[3].children[0].getAttribute('data') ) {
+                    document.getElementById('account_name').innerHTML = "";
+                    showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
+                    break;
+                }
             }
         };
+    };
+
+    /**
+     * Handles a keypress event
+     *
+     * The keypress event is trigged between keydown and keyup and is the . If document.hotkey flag is true,
+     * this mean that a hoykey was pressed and the keyPress even need to avoid write the character on the current
+     * input because the keycode was consumed by keyDown event.
+     *
+     * @return {null}
+     */
+    keyPressHandler = function() {
+        return function (e) {
+            if (document.hotkey == true) {
+                e.preventDefault();
+                document.hotkey = false;
+                return false;
+            }
+        }
     };
 
     /**
@@ -483,8 +555,9 @@ JSViewer = function () {
      * @return {null}
      */
     setKeyboardHandlers = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
-        Y.one('doc').on("key", keyDownHandler(Y, total_number_images, POST_CACHE, PRE_CACHE), 'enter,81,87');
+        Y.one('doc').on("keydown", keyDownHandler(Y, total_number_images, POST_CACHE, PRE_CACHE), 'enter,81,87');
         Y.one('doc').on("keyup", keyUpHandler(Y, total_number_images, POST_CACHE, PRE_CACHE));
+        Y.one('doc').on("keypress", keyPressHandler());
     };
 
     /**

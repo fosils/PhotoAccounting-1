@@ -17,7 +17,7 @@ define("PRE_CACHE", 5);
  *
  */
 function getFilesInDir($dir, $filter='', $recursive=false, $addDirs=false){
-	 
+
 	$res = array();
 
 	$dirIterator = new DirectoryIterator($dir);
@@ -39,7 +39,7 @@ function getFilesInDir($dir, $filter='', $recursive=false, $addDirs=false){
 		$dirIterator->next();
 	}
 
-	return $res;	 
+	return $res;
 }
 
 
@@ -90,19 +90,20 @@ $accountImage->updateFileNames($files);
 	}
 
 	var my_codes = Array();
-	my_codes['a'] = '3120';
-	my_codes['s'] = '1110';
-	my_codes['d'] = '1120';
-	my_codes['f'] = '1130';
-	
-	document.onkeydown=function(e){
-		var valas = my_codes[String.fromCharCode(e.which).toLowerCase()];
-		if(valas != undefined) {
-			$('jsv_account').value = valas;
-			//comment out the next line if you want the cursor to stay in the field.
-			$('jsv_account').blur();
-		}
-	}
+
+	/* This array represent the keycode for keys that can't be used as a hotkey. */
+	document.reservedKeys = [
+		8, // backspace
+		9, // tab
+		13, // enter
+		16, // shift
+		17, // ctrl
+		18, // alt
+		32, // space
+		45, // insert
+		46 // delete
+	];
+
 	JSViewer.start(<?php echo count($files); ?>, <?php echo POST_CACHE; ?>, <?php echo PRE_CACHE; ?>, <?php echo isset($_GET['imageID'])?$_GET['imageID']:0; ?>,my_codes);
    </script>
 </head>
@@ -142,8 +143,9 @@ $accountImage->updateFileNames($files);
 				</li>
 				<li><label for="jsv_account">Account</label>
 					<div>
-						<input type="text" name="jsv_account" id="jsv_account" size="10" /><span
-							id="error_account" class="field_error"></span>
+						<input type="text" name="jsv_account" id="jsv_account" size="10" />
+						<span id="error_account" class="field_error"></span>
+						<span id="account_name" class="account_name"></span>
 					</div>
 				</li>
 				<li><label for="jsv_amount">Amount</label>
