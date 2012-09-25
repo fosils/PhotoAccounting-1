@@ -91,6 +91,7 @@ $accountImage->updateFileNames($files);
 
 	var my_codes = Array();
 
+	/* This array represent the keycode for keys that can't be used as a hotkey. */
 	document.reservedKeys = [
 		8, // backspace
 		9, // tab
