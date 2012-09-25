@@ -436,6 +436,7 @@ JSViewer = function () {
      */
     keyDownHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
+            if(document.activeElement.id == "jsv_text") return;
             var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                 .children[1].children[0].getElementsByTagName("tr");
 
@@ -526,6 +527,10 @@ JSViewer = function () {
 
     /**
      * Handles a keypress event
+     *
+     * The keypress event is trigged between keydown and keyup and is the . If document.hotkey flag is true,
+     * this mean that a hoykey was pressed and the keyPress even need to avoid write the character on the current
+     * input because the keycode was consumed by keyDown event.
      *
      * @return {null}
      */
