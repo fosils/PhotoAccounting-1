@@ -3,6 +3,59 @@
 	$userEmail = $_GET['email'];
 	$folderName = $_GET["devicetoken"];
 	
+	//////////////////////////////////////////////////////////////////////////////
+	// PostgreSql Code
+	//////////////////////////////////////////////////////////////////////////////
+	$result = $db->CUST_GetByEmail($userEmail);
+	$result = (is_bool($result)) ? null : pg_fetch_assoc($result);
+	$customer_id = 0;
+	
+	if(is_null($result)){
+		unset($result);
+		
+		$result = $db->CUST_Create($email);
+		
+		if(is_bool($result) && $result){
+			unset($result);
+			$result = $db->CUST_GetByEmail($email);
+			$result = (!is_bool($result)) ? pg_fetch_assoc($result) : null;
+	
+			if(!is_null($result))
+				$customer_id = $result["customer_id"];
+			else{
+				echo "<response><code>200</code></response>";
+				exit();
+			}
+		}
+			
+	}else{
+		$customer_id = $result["customer_id"];
+	}
+	
+	$result = $db->CDV_GetCustomerID($folderName);
+	$result = (is_bool($result)) ? null : pg_fetch_assoc($result);
+	
+	if(!is_null($result)){
+		if($result["customer_id"] != $customer_id){
+			unset($result);
+			
+			$result = $db->CDV_Create($customer_id, $folderName);
+			
+			if(!$result){
+    				echo "<response><code>200</code></response>";
+    				exit();
+			}
+		}
+	}else{
+			$result = $db->CDV_Create($customer_id, $folderName);
+			
+			if(!$result){
+    				echo "<response><code>200</code></response>";
+    				exit();
+			}
+	}
+	///////////////////////////////////////////////////////////////////////////////
+	
 	///////////////////////////////////////////////////////////////////
 	// S3 Code
 	///////////////////////////////////////////////////////////////////
@@ -14,7 +67,7 @@
 	if(!is_dir($folderName)) {
 		mkdir($folderName);
 	}
-				
+	
 	$fileName = $folderName."/useremail.txt";
 	$fp = fopen($fileName, 'w');
 	fwrite($fp,$userEmail);
