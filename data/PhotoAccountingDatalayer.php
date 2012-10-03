@@ -24,7 +24,7 @@ class PhotoAccountingDatalyer extends PGDatalyaer{
 		return $this->Exec("select * from receipts;");
 	}
 	public function RCT_Create($customer_id, $s3url){
-		return $this->Exec("insert into receipts(customer_id, s3url, received_date) values(:customer_id, :s3url, current_date);", array(":customer_id"=>$customer_id, ":s3url"=>$s3url));
+		return $this->Exec("insert into receipts(customer_id, s3url, received_date) values(:customer_id, :s3url, current_timestamp);", array(":customer_id"=>$customer_id, ":s3url"=>$s3url));
 	}
 
 	
