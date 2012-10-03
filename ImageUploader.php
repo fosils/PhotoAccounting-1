@@ -14,8 +14,8 @@
 				echo "<response><code>200</code></response>";
 			} else {
 				$illegalCharRegEx = '/[^(\x20-\x7F)]*/';
-    			$devicetoken = preg_replace($illegalCharRegEx,'', trim($_REQUEST["devicetoken"]));	
-    			$imagetype = preg_replace($illegalCharRegEx,'', trim($_REQUEST["imagetype"]));	
+	    			$devicetoken = preg_replace($illegalCharRegEx,'', trim($_REQUEST["devicetoken"]));	
+	    			$imagetype = preg_replace($illegalCharRegEx,'', trim($_REQUEST["imagetype"]));	
 				$email = @trim($_REQUEST["email"]);
 				
 				$folderName = "images/{$devicetoken}";
