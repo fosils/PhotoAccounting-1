@@ -16,7 +16,7 @@
 				$illegalCharRegEx = '/[^(\x20-\x7F)]*/';
     			$devicetoken = preg_replace($illegalCharRegEx,'', trim($_REQUEST["devicetoken"]));	
     			$imagetype = preg_replace($illegalCharRegEx,'', trim($_REQUEST["imagetype"]));	
-				$email = trim($_REQUEST["email"]);
+				$email = @trim($_REQUEST["email"]);
 				
 				$folderName = "images/{$devicetoken}";
 				$imageCategory = $imagetype;
@@ -28,7 +28,7 @@
 				//////////////////////////////////////////////////////////////////////////////
 				// PostgreSql Code
 				//////////////////////////////////////////////////////////////////////////////
-				$result = $db->CDV_GetCustomerID($device_id);
+				$result = $db->CDV_GetCustomerID($devicetoken);
 				$result = (is_bool($result)) ? null : pg_fetch_assoc($result);
 				$customer_id = 0;
 				
@@ -88,7 +88,7 @@
 						////////////////////////////////////////////////////////////////////////////////
 						// PostgreSql 
 						////////////////////////////////////////////////////////////////////////////////
-						$result = $db->RCT_Create($customer_id, @$s3->get_object_url($bucket, $file, '1  year'));
+						$result = $db->RCT_Create($customer_id, "$bucket/$file");
 						
 						if(!$result){
 	    						echo "<response><code>200</code></response>";

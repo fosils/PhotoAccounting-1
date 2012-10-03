@@ -2,6 +2,7 @@
 
 	$userEmail = $_GET['email'];
 	$folderName = $_GET["devicetoken"];
+	$devicetoken = $folderName;
 	
 	//////////////////////////////////////////////////////////////////////////////
 	// PostgreSql Code
@@ -32,14 +33,14 @@
 		$customer_id = $result["customer_id"];
 	}
 	
-	$result = $db->CDV_GetCustomerID($folderName);
+	$result = $db->CDV_GetCustomerID($devicetoken);
 	$result = (is_bool($result)) ? null : pg_fetch_assoc($result);
 	
 	if(!is_null($result)){
 		if($result["customer_id"] != $customer_id){
 			unset($result);
 			
-			$result = $db->CDV_Create($customer_id, $folderName);
+			$result = $db->CDV_Create($customer_id, $devicetoken);
 			
 			if(!$result){
     				echo "<response><code>200</code></response>";
@@ -47,7 +48,7 @@
 			}
 		}
 	}else{
-			$result = $db->CDV_Create($customer_id, $folderName);
+			$result = $db->CDV_Create($customer_id, $devicetoken);
 			
 			if(!$result){
     				echo "<response><code>200</code></response>";
@@ -89,8 +90,5 @@
 		echo "<response><code>100</code></response>";
     else 
     	echo "<response><code>200</code></response>";
-//    } else {
-//    	echo "<response><code>200</code></response>";
-//    }
     
 ?>
