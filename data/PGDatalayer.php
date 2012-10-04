@@ -152,7 +152,8 @@ class PGDatalyaer
 		if(!is_null($pgconn)){
 			$result = pg_query($pgconn, $query);
 			$this->eMsg = pg_last_error($pgconn);
-			$this->affected_rows = pg_affected_rows($result);
+			if($result)
+				$this->affected_rows = pg_affected_rows($result);
 			
 			$this->lastResult = $result;
 		}
