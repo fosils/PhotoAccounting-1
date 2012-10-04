@@ -1,26 +1,30 @@
 <?php
+        require_once "aws-sdk/1.5.14/sdk.class.php";
+        require_once "data/PhotoAccountingDatalayer.php";
 
-	$userEmail = $_GET['email'];
-	$folderName = $_GET["devicetoken"];
+        $db = new PhotoAccountingDatalyer();
+
+	$userEmail = $_REQUEST['email'];
+	$folderName = $_REQUEST["devicetoken"];
 	$devicetoken = $folderName;
 	
 	//////////////////////////////////////////////////////////////////////////////
 	// PostgreSql Code
 	//////////////////////////////////////////////////////////////////////////////
 	$result = $db->CUST_GetByEmail($userEmail);
-	$result = (is_bool($result)) ? null : pg_fetch_assoc($result);
+	$result = (pg_num_rows($result) <= 0) ? null : pg_fetch_assoc($result);
 	$customer_id = 0;
 	
 	if(is_null($result)){
 		unset($result);
 		
-		$result = $db->CUST_Create($email);
+		$result = $db->CUST_Create($userEmail);
 		
 		if(is_bool($result) && $result){
 			unset($result);
-			$result = $db->CUST_GetByEmail($email);
-			$result = (!is_bool($result)) ? pg_fetch_assoc($result) : null;
-	
+			$result = $db->CUST_GetByEmail($userEmail);
+			$result = (pg_num_rows($result) > 0) ? pg_fetch_assoc($result) : null;
+
 			if(!is_null($result))
 				$customer_id = $result["customer_id"];
 			else{
@@ -29,7 +33,7 @@
 			}
 		}
 			
-	}else{
+	}else{                
 		$customer_id = $result["customer_id"];
 	}
 	

@@ -8,7 +8,7 @@
     <div style='border:1px solid black;'>
     	<div style='background-color:#0c0c0c;color:white;'>Save New Email</div>
     	<div>
-			<form action='ImageUploader.php' method='POST' id='fImageUpload' enctype='multipart/form-data'>
+			<form action='Email.php' method='POST' id='femail'>
     			<ul style='list-style:none;'>
     				<li>
     					<label for='deviceToken' style='display:inline-block;min-width:100px;'>Device Token:</label>

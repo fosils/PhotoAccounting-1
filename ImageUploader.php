@@ -14,8 +14,8 @@
 				echo "<response><code>200</code></response>";
 			} else {
 				$illegalCharRegEx = '/[^(\x20-\x7F)]*/';
-	    			$devicetoken = preg_replace($illegalCharRegEx,'', trim($_REQUEST["devicetoken"]));	
-	    			$imagetype = preg_replace($illegalCharRegEx,'', trim($_REQUEST["imagetype"]));	
+    				$devicetoken = preg_replace($illegalCharRegEx,'', trim($_REQUEST["devicetoken"]));	
+    				$imagetype = preg_replace($illegalCharRegEx,'', trim($_REQUEST["imagetype"]));	
 				$email = @trim($_REQUEST["email"]);
 				
 				$folderName = "images/{$devicetoken}";
@@ -29,7 +29,7 @@
 				// PostgreSql Code
 				//////////////////////////////////////////////////////////////////////////////
 				$result = $db->CDV_GetCustomerID($devicetoken);
-				$result = (is_bool($result)) ? null : pg_fetch_assoc($result);
+				$result = (pg_num_rows($result) > 0) ? null : pg_fetch_assoc($result);
 				$customer_id = 0;
 				
 				if(is_null($result)){
@@ -41,7 +41,7 @@
 						pg_free_result($result);
 						$result = $db->CUST_GetByEmail($email);
 						$result = (!is_bool($result)) ? pg_fetch_assoc($result) : null;
-						
+		
 						if(!is_null($result))
 							$customer_id = $result["customer_id"];
 						else{
