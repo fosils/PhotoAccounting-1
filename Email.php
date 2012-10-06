@@ -9,57 +9,48 @@
 	$devicetoken = $folderName;
 	
 	//////////////////////////////////////////////////////////////////////////////
-	// PostgreSql Code
-	//////////////////////////////////////////////////////////////////////////////
-	$result = $db->CUST_GetByEmail($userEmail);
-	$result = (pg_num_rows($result) <= 0) ? null : pg_fetch_assoc($result);
-	$customer_id = 0;
-	
-	if(is_null($result)){
-		unset($result);
-		
-		$result = $db->CUST_Create($userEmail);
-		
-		if(is_bool($result) && $result){
-			unset($result);
-			$result = $db->CUST_GetByEmail($userEmail);
-			$result = (pg_num_rows($result) > 0) ? pg_fetch_assoc($result) : null;
+        // PostgreSql Code
+        //////////////////////////////////////////////////////////////////////////////
+        $result = $db->CUST_GetByEmail($userEmail);
+        $result = (pg_num_rows($result) <= 0) ? null : pg_fetch_assoc($result);
+        $customer_id = 0;
 
-			if(!is_null($result))
-				$customer_id = $result["customer_id"];
-			else{
-				echo "<response><code>200</code></response>";
-				exit();
-			}
-		}
-			
-	}else{                
-		$customer_id = $result["customer_id"];
-	}
-	
-	$result = $db->CDV_GetCustomerID($devicetoken);
-	$result = (is_bool($result)) ? null : pg_fetch_assoc($result);
-	
-	if(!is_null($result)){
-		if($result["customer_id"] != $customer_id){
-			unset($result);
-			
-			$result = $db->CDV_Create($customer_id, $devicetoken);
-			
-			if(!$result){
-    				echo "<response><code>200</code></response>";
-    				exit();
-			}
-		}
-	}else{
-			$result = $db->CDV_Create($customer_id, $devicetoken);
-			
-			if(!$result){
-    				echo "<response><code>200</code></response>";
-    				exit();
-			}
-	}
-	///////////////////////////////////////////////////////////////////////////////
+        if(is_null($result)){
+                unset($result);
+
+                $result = $db->CUST_Create($userEmail);
+
+                if(is_bool($result) && $result){
+                        unset($result);
+                        $result = $db->CUST_GetByEmail($userEmail);
+                        $result = (pg_num_rows($result) > 0) ? pg_fetch_assoc($result) : null;
+
+                        if(!is_null($result))
+                                $customer_id = $result["customer_id"];
+                        else{
+                                echo "<response><code>200</code></response>";
+                                exit();
+                        }
+                }
+
+        }else{
+                $customer_id = $result["customer_id"];
+        }
+
+        $result = $db->CDV_ExistsForCustomer($customer_id, $devicetoken);
+        $result = (pg_num_rows($result) <= 0) ? null : pg_fetch_assoc($result);
+
+        print_r($result);
+
+        if(is_null($result)){
+                $result = $db->CDV_Create($customer_id, $devicetoken);
+
+                if(!$result){
+                        echo "<response><code>200</code></response>";
+                        exit();
+                }
+        }
+        ///////////////////////////////////////////////////////////////////////////////
 	
 	///////////////////////////////////////////////////////////////////
 	// S3 Code

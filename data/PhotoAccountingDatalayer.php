@@ -31,5 +31,8 @@ class PhotoAccountingDatalyer extends PGDatalyaer{
 	public function CDV_GetCustomerID($device_id){
 		return $this->Exec("select * from cust_devices where device_id=:device_id limit 1;", array(":device_id"=>$device_id));
 	}
+        public function CDV_ExistsForCustomer($customer_id, $device_id){
+                return $this->Exec("select 1 as Exists from cust_devices where customer_id=:customer_id and device_id=:device_id limit 1;", array(":customer_id"=>$customer_id, ":device_id"=>$device_id));
+        }
 }
 ?>

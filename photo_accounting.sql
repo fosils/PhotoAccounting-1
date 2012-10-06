@@ -8,7 +8,7 @@
 DROP TABLE IF EXISTS receipts;
 CREATE TABLE receipts (	id SERIAL PRIMARY KEY, 
 						customer_id INT, 
-						receipt_number SERIAL,
+						receipt_number serial,
 						image_type character varying(255), 
 						entry_date DATE DEFAULT current_date, 
 						text VARCHAR(9999), 
@@ -46,8 +46,12 @@ INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account
 INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account, offset_account) VALUES (26,'','2012-08-14','TEST 26',26,26,26);
 INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account, offset_account) VALUES (27,'','2012-08-14','TEST 27',27,27,27); 
 
+drop view if exists rnum_next; 
+create view rnum_next as select customer_id, (max(receipt_number)+1) as receipt_next from receipts group by customer_id order by customer_id;
+
 DROP TABLE IF EXISTS customers;
 CREATE TABLE customers (customer_id SERIAL PRIMARY KEY, email varchar(255));
+CREATE UNIQUE INDEX email_idx ON customers(email);
 
 drop table if exists cust_devices;
 create table cust_devices(id serial primary key, customer_id int, device_id varchar(100));

@@ -26,35 +26,39 @@
 				}
 				
 				//////////////////////////////////////////////////////////////////////////////
-				// PostgreSql Code
-				//////////////////////////////////////////////////////////////////////////////
-				$result = $db->CDV_GetCustomerID($devicetoken);
-				$result = (pg_num_rows($result) > 0) ? null : pg_fetch_assoc($result);
-				$customer_id = 0;
-				
-				if(is_null($result)){
-					unset($result);
-						
-					$result = $db->CUST_Create($email);
-					
-					if($result){
-						pg_free_result($result);
-						$result = $db->CUST_GetByEmail($email);
-						$result = (!is_bool($result)) ? pg_fetch_assoc($result) : null;
-		
-						if(!is_null($result))
-							$customer_id = $result["customer_id"];
-						else{
-							echo "<response><code>200</code></response>";
-							exit();
-						}
-					}
-					
-				}else{
-					$customer_id = $result["customer_id"];
-				}
-				///////////////////////////////////////////////////////////////////////////////
-				
+                                // PostgreSql Code
+                                //////////////////////////////////////////////////////////////////////////////
+                                $result = $db->CDV_GetCustomerID($devicetoken);
+                                $result = (pg_num_rows($result) <= 0) ? null : pg_fetch_assoc($result);
+                                $customer_id = 0;
+
+                                if(is_null($result)){
+                                        unset($result);
+
+                                        $result = $db->CUST_GetByEmail($email);
+                                        $result = (pg_num_rows($result)<=0) ? null : pg_fetch_assoc($result);
+
+                                        if(is_null($result)){
+                                                unset($result);
+
+                                                $result = $db->CUST_Create($email);
+                                                $result = ($result) ? $db->CUST_GetByEmail($email) : null;
+                                                $result = (pg_num_rows($result) > 0) ? pg_fetch_assoc($result) : null;
+
+                                                if(!is_null($result))
+                                                        $customer_id = $result["customer_id"];
+                                                else{
+                                                        echo "<response><code>200</code></response>";
+                                                        exit();
+                                                }
+                                        }else{
+                                                $customer_id = $result["customer_id"];
+                                        }
+                                }else{
+                                        $customer_id = $result["customer_id"];
+                                }
+                                ///////////////////////////////////////////////////////////////////////////////				
+
 				$newfilename = @strtotime("now");
 				$newfilename = $imageCategory."_".$newfilename.".jpeg";
 				move_uploaded_file($imageFile['tmp_name'],

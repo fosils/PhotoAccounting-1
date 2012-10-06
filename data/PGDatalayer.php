@@ -173,11 +173,11 @@ class PGDatalyaer
 			$i = 0;
 			foreach($params as $k => $v){
 				if(is_numeric($v)){
-					$data = $v;
+					$data = "'$v'";
 				}else if(is_string($v)){
 					$data = "'".str_replace("'", "''", $v)."'";
 				}else{
-					$data = $v;
+					$data = "'$v'";
 				}
 				
 				$sql = str_replace($k, $data, $sql);
