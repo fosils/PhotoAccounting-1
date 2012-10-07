@@ -38,17 +38,9 @@
     	<div>
 			<form action='ImageUploader.php' method='POST' id='fImageUpload' enctype='multipart/form-data'>
     			<ul style='list-style:none;'>
-                                <li>
-                                        <label for='email'>Email:</label>
-    					<input type='text' name='email' id='email' />
-                                </li>
     				<li>
     					<label for='deviceToken'>Device Token</label>
     					<input type='text' name='devicetoken' id='devicetoken' />
-    				</li>
-    				<li>
-    					<label for='imagetype'>Image Type</label>
-    					<input type='text' name='imagetype' id='imagetype' />
     				</li>
     				<li>
     					<label for='newImage'>Image</label>

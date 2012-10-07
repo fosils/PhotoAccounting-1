@@ -15,8 +15,9 @@
 			} else {
 				$illegalCharRegEx = '/[^(\x20-\x7F)]*/';
     				$devicetoken = preg_replace($illegalCharRegEx,'', trim($_REQUEST["devicetoken"]));	
-    				$imagetype = preg_replace($illegalCharRegEx,'', trim($_REQUEST["imagetype"]));	
-				$email = @trim($_REQUEST["email"]);
+    				$imagetype = $imageFile["name"];//preg_replace($illegalCharRegEx,'', trim($_REQUEST["imagetype"]));	
+				$imagetype = substr($imagetype, strrpos($imagetype, ".")+1);
+				$email = "";//@trim($_REQUEST["email"]);
 				
 				$folderName = "images/{$devicetoken}";
 				$imageCategory = $imagetype;
@@ -60,7 +61,7 @@
                                 ///////////////////////////////////////////////////////////////////////////////				
 
 				$newfilename = @strtotime("now");
-				$newfilename = $imageCategory."_".$newfilename.".jpeg";
+				$newfilename = "{$imageCategory}_{$newfilename}.{$imagetype}";
 				move_uploaded_file($imageFile['tmp_name'],
 							$folderName."/".$newfilename);
 				

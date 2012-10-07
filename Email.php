@@ -20,7 +20,7 @@
 
                 $result = $db->CUST_Create($userEmail);
 
-                if(is_bool($result) && $result){
+                if($result){
                         unset($result);
                         $result = $db->CUST_GetByEmail($userEmail);
                         $result = (pg_num_rows($result) > 0) ? pg_fetch_assoc($result) : null;
@@ -36,11 +36,14 @@
         }else{
                 $customer_id = $result["customer_id"];
         }
+	
+	if($customer_id <= 0){
+		print "<response><code>200</code></response>";
+		exit();
+	}
 
         $result = $db->CDV_ExistsForCustomer($customer_id, $devicetoken);
         $result = (pg_num_rows($result) <= 0) ? null : pg_fetch_assoc($result);
-
-        print_r($result);
 
         if(is_null($result)){
                 $result = $db->CDV_Create($customer_id, $devicetoken);
@@ -51,6 +54,7 @@
                 }
         }
         ///////////////////////////////////////////////////////////////////////////////
+	
 	
 	///////////////////////////////////////////////////////////////////
 	// S3 Code
