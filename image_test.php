@@ -43,11 +43,7 @@
     					<input type='text' name='devicetoken' id='devicetoken' />
     				</li>
     				<li>
-    					<label for='deviceToken'>Image Type</label>
-    					<input type='text' name='imagetype' id='imagetype' />
-    				</li>
-    				<li>
-    					<label for='deviceToken'>Image</label>
+    					<label for='newImage'>Image</label>
     					<input type='file' name='newImage' id='newImage' />
     				</li>
     				<li style='text-indent:100px;'>

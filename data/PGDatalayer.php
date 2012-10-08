@@ -152,7 +152,8 @@ class PGDatalyaer
 		if(!is_null($pgconn)){
 			$result = pg_query($pgconn, $query);
 			$this->eMsg = pg_last_error($pgconn);
-			$this->affected_rows = pg_affected_rows($result);
+			if($result)
+				$this->affected_rows = pg_affected_rows($result);
 			
 			$this->lastResult = $result;
 		}
@@ -172,11 +173,11 @@ class PGDatalyaer
 			$i = 0;
 			foreach($params as $k => $v){
 				if(is_numeric($v)){
-					$data = $v;
+					$data = "'$v'";
 				}else if(is_string($v)){
 					$data = "'".str_replace("'", "''", $v)."'";
 				}else{
-					$data = $v;
+					$data = "'$v'";
 				}
 				
 				$sql = str_replace($k, $data, $sql);

@@ -14,9 +14,10 @@
 				echo "<response><code>200</code></response>";
 			} else {
 				$illegalCharRegEx = '/[^(\x20-\x7F)]*/';
-    			$devicetoken = preg_replace($illegalCharRegEx,'', trim($_REQUEST["devicetoken"]));	
-    			$imagetype = preg_replace($illegalCharRegEx,'', trim($_REQUEST["imagetype"]));	
-				$email = trim($_REQUEST["email"]);
+    				$devicetoken = preg_replace($illegalCharRegEx,'', trim($_REQUEST["devicetoken"]));	
+    				$imagetype = $imageFile["name"];//preg_replace($illegalCharRegEx,'', trim($_REQUEST["imagetype"]));	
+				$imagetype = substr($imagetype, strrpos($imagetype, ".")+1);
+				$email = "";//@trim($_REQUEST["email"]);
 				
 				$folderName = "images/{$devicetoken}";
 				$imageCategory = $imagetype;
@@ -26,37 +27,41 @@
 				}
 				
 				//////////////////////////////////////////////////////////////////////////////
-				// PostgreSql Code
-				//////////////////////////////////////////////////////////////////////////////
-				$result = $db->CDV_GetCustomerID($device_id);
-				$result = (is_bool($result)) ? null : pg_fetch_assoc($result);
-				$customer_id = 0;
-				
-				if(is_null($result)){
-					unset($result);
-						
-					$result = $db->CUST_Create($email);
-					
-					if($result){
-						pg_free_result($result);
-						$result = $db->CUST_GetByEmail($email);
-						$result = (!is_bool($result)) ? pg_fetch_assoc($result) : null;
-						
-						if(!is_null($result))
-							$customer_id = $result["customer_id"];
-						else{
-							echo "<response><code>200</code></response>";
-							exit();
-						}
-					}
-					
-				}else{
-					$customer_id = $result["customer_id"];
-				}
-				///////////////////////////////////////////////////////////////////////////////
-				
+                                // PostgreSql Code
+                                //////////////////////////////////////////////////////////////////////////////
+                                $result = $db->CDV_GetCustomerID($devicetoken);
+                                $result = (pg_num_rows($result) <= 0) ? null : pg_fetch_assoc($result);
+                                $customer_id = 0;
+
+                                if(is_null($result)){
+                                        unset($result);
+
+                                        $result = $db->CUST_GetByEmail($email);
+                                        $result = (pg_num_rows($result)<=0) ? null : pg_fetch_assoc($result);
+
+                                        if(is_null($result)){
+                                                unset($result);
+
+                                                $result = $db->CUST_Create($email);
+                                                $result = ($result) ? $db->CUST_GetByEmail($email) : null;
+                                                $result = (pg_num_rows($result) > 0) ? pg_fetch_assoc($result) : null;
+
+                                                if(!is_null($result))
+                                                        $customer_id = $result["customer_id"];
+                                                else{
+                                                        echo "<response><code>200</code></response>";
+                                                        exit();
+                                                }
+                                        }else{
+                                                $customer_id = $result["customer_id"];
+                                        }
+                                }else{
+                                        $customer_id = $result["customer_id"];
+                                }
+                                ///////////////////////////////////////////////////////////////////////////////				
+
 				$newfilename = @strtotime("now");
-				$newfilename = $imageCategory."_".$newfilename.".jpeg";
+				$newfilename = "{$imageCategory}_{$newfilename}.{$imagetype}";
 				move_uploaded_file($imageFile['tmp_name'],
 							$folderName."/".$newfilename);
 				
@@ -88,7 +93,7 @@
 						////////////////////////////////////////////////////////////////////////////////
 						// PostgreSql 
 						////////////////////////////////////////////////////////////////////////////////
-						$result = $db->RCT_Create($customer_id, @$s3->get_object_url($bucket, $file, '1  year'));
+						$result = $db->RCT_Create($customer_id, "$bucket/$file");
 						
 						if(!$result){
 	    						echo "<response><code>200</code></response>";
