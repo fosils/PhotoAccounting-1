@@ -2,7 +2,7 @@
 /**
 * 
 */
-class PGDatalyaer
+class PGDatalyer
 {
 	private $pglink;
 	
