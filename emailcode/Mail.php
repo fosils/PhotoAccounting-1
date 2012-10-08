@@ -1,4 +1,12 @@
-<?php 
+<?php
+/** COPYRIGHT Time at Task Aps*/
+/**
+  * This file does following things
+  * 1. sends email using Zend_Mail package of Zend framework
+  * 2. If the $attachement param has been specificed it sends the provided file as attachement in the email
+  * 3. If email sending fails due to some problem at servers end, it logs the details in the log/mail.log folder with the timestamp
+  *
+  **/
 date_default_timezone_set('Europe/London');
 
 // appears as sender in emails sent
@@ -7,15 +15,14 @@ define('SENDER_NAME', 'webmaster');
 // bounce emails are sent here
 define('RETURN_PATH', 'da@ebogholderen.dk');
 // logs the failure happening in script during email sending
-define('LOG_FILE', './mail.log');
+define('LOG_FILE', './log/mail.log');
 // notifies about the email sending failed
 define('FAILURE_NOTIFY_EMAIL', 'mrdavidandersen@gmail.com');
 
-
-$subject = 'my subject';
-$message = 'message in email';
+$subject = 'Final test for Mr Anderson';
+$message = 'He should receive a file myattach.txt in his email';
 $attachement = array('fileName' => 'myattach.txt',
-		      'filePath' => 'myattach.txt',
+		      'filePath' => './attachements/myattach.txt',
                       'type'     => 'text/plain' );
 $to = 'mrdavidandersen@gmail.com';
 
