@@ -25,41 +25,34 @@
 				if(!is_dir($folderName)) {
 					mkdir($folderName);
 				}
-				
-				//////////////////////////////////////////////////////////////////////////////
-                                // PostgreSql Code
-                                //////////////////////////////////////////////////////////////////////////////
-                                $result = $db->CDV_GetCustomerID($devicetoken);
-                                $result = (pg_num_rows($result) <= 0) ? null : pg_fetch_assoc($result);
-                                $customer_id = 0;
 
-                                if(is_null($result)){
-                                        unset($result);
+        			//////////////////////////////////////////////////////////////////////////////
+        			// PostgreSql Code
+        			//////////////////////////////////////////////////////////////////////////////
+        			$customer_id = 0;
 
-                                        $result = $db->CUST_GetByEmail($email);
-                                        $result = (pg_num_rows($result)<=0) ? null : pg_fetch_assoc($result);
+        			$result = $db->CDV_Get($devicetoken);
+        			$result = (pg_num_rows($result) <= 0) ? null : pg_fetch_assoc($result);
 
-                                        if(is_null($result)){
-                                                unset($result);
+        			if(is_null($result)){
+                			$result = create_customer();
 
-                                                $result = $db->CUST_Create($email);
-                                                $result = ($result) ? $db->CUST_GetByEmail($email) : null;
-                                                $result = (pg_num_rows($result) > 0) ? pg_fetch_assoc($result) : null;
+                			if(!is_null($result)){
+			                        $customer_id = $result["customer_id"];
 
-                                                if(!is_null($result))
-                                                        $customer_id = $result["customer_id"];
-                                                else{
-                                                        echo "<response><code>200</code></response>";
-                                                        exit();
-                                                }
-                                        }else{
-                                                $customer_id = $result["customer_id"];
-                                        }
-                                }else{
-                                        $customer_id = $result["customer_id"];
-                                }
-                                ///////////////////////////////////////////////////////////////////////////////				
+                        			$result = $db->CDV_Create($customer_id, $devicetoken);
 
+                        			if(!$result){
+                               				echo "<response><code>200</code></response>";
+                                			exit();
+                        			}
+                			}else{
+                       				echo "<response><code>200</code></response>";
+                       				exit();
+                			}
+        			}
+        			//////////////////////////////////////////////////////////////////////////////			
+	
 				$newfilename = @strtotime("now");
 				$newfilename = "{$imageCategory}_{$newfilename}.{$imagetype}";
 				move_uploaded_file($imageFile['tmp_name'],
