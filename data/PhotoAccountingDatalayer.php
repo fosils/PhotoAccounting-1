@@ -21,6 +21,9 @@ class PhotoAccountingDatalyer extends PGDatalyaer{
 	public function CUST_GetFirstEmpty(){
 		return $this->Exec("select * from customers where email is null order by customer_id limit 1");
 	}
+	public function CUST_GetLastEmpty(){
+		return $this->Exec("select * from customers where email is null order by customer_id desc limit 1");
+	}
 	public function CUST_GetByID($id){
 		return $this->Exec("select * from customers where customer_id=:customer_id;", array(":customer_id"=>$id));
 	}
@@ -63,7 +66,7 @@ function create_customer($email=null){
        
 	if($result){
                 unset($result);
-                $result = (!is_null($email)) ? $db->CUST_GetByEmail($email) : $db->CUST_GetFirstEmpty();
+                $result = (!is_null($email)) ? $db->CUST_GetByEmail($email) : $db->CUST_GetLastEmpty();
         
 		return  (pg_num_rows($result) > 0) ? pg_fetch_assoc($result) : null;
 	}
