@@ -1,7 +1,7 @@
 <?php
 require_once "PGDatalayer.php";
 
-class PhotoAccountingDatalyer extends PGDatalyer{
+class PhotoAccountingDatalyer extends PGDatalayer{
 	public function __construct(){
 		parent::__construct("localhost", "photo_accounting");
 	}	
