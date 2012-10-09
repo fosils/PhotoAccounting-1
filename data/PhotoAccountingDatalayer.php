@@ -1,7 +1,7 @@
 <?php
 require_once "PGDatalayer.php";
 
-class PhotoAccountingDatalyer extends PGDatalyaer{
+class PhotoAccountingDatalyer extends PGDatalayer{
 	public function __construct(){
 		parent::__construct("localhost", "photo_accounting");
 	}	
@@ -30,12 +30,15 @@ class PhotoAccountingDatalyer extends PGDatalyaer{
 	public function CUST_UpdateEmail($customer_id, $email){
 		return $this->Exec("update customers set email=:email where customer_id=:customer_id;", array(":customer_id"=>$customer_id, ":email"=>$email));
 	}
-	
+	/**
+	 * Receipts
+	 */	
 	public function RCT_Create($customer_id, $s3url){
 		return $this->Exec("insert into receipts(customer_id, s3url, received_date) values(:customer_id, :s3url, current_timestamp);", array(":customer_id"=>$customer_id, ":s3url"=>$s3url));
 	}
-
-	
+	/**
+	 * Customer Receipts
+	 */
 	public function CDV_Create($customer_id, $device_id){
 		return $this->Exec("insert into cust_devices(customer_id, udid) values(:customer_id, :device_id);", array(":customer_id"=>$customer_id, ":device_id"=>$device_id));
 	}
@@ -72,6 +75,5 @@ function create_customer($email=null){
 	}
 
 	return null;
-	
 }
 ?>

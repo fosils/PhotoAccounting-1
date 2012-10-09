@@ -5,8 +5,8 @@
 
 ini_set('max_execution_time',1000);
 $hostname = '{imap.gmail.com:993/imap/ssl}INBOX';
-$account = "test@ebogholderen.dk";
-$password = "jonathan1111";
+$account = "test918171@gmail.com";
+$password = "pleasechangethispassword";
 $bot = new Retriever($hostname,$account,$password);
 $bot->main();
 
@@ -20,7 +20,7 @@ class Retriever
 			. imap_last_error(),"Failed to connect to mailbox!<br>");//connecting to mailbox
 		$this->emails = imap_search($this->inbox,'ALL');
 		$this->mister = //"ramblerramblerramblerrambler@gmail.com";//
-			"da@ebogholderen.dk";
+			"ramblerramblerramblerrambler@gmail.com";
 		echo "$this->mister is your account.<br><br>";
 	}
 	function __destruct()

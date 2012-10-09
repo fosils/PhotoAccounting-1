@@ -22,7 +22,7 @@ class AccountImage{
 		$image_id = pg_escape_string($imageID);
 		
 		// Performing SQL query
-		$query = "SELECT id, entry_date, text, amount, account, offset_account, image_name FROM entries WHERE image_id = {$image_id}";
+		$query = "SELECT id, entry_date, text, amount, account, offset_account, image_name FROM receipts WHERE image_id = {$image_id}";
 		$result = pg_query($query) or die('Query failed: ' . pg_last_error());
 		
 		// Get number of rows
@@ -30,13 +30,13 @@ class AccountImage{
 		
 		if ($rows == 0) {
 			// Insert a new row with default values and get its id
-			$create_query = "INSERT INTO entries (customer_id, entry_id, image_id) VALUES (1, {$image_id}, {$image_id}) RETURNING id";
+			$create_query = "INSERT INTO receipts (customer_id, entry_id, image_id) VALUES (1, {$image_id}, {$image_id}) RETURNING id";
 			$create_result = pg_query($create_query); // or die('Create query failed: ' . pg_last_error());
 			$create_row = pg_fetch_array($create_result);
 			$create_id = $create_row[0];
 		
 			// Get the newly created row. Yes, we intentionally overwrite the earlier '$result' variable
-			$query = "SELECT * FROM entries WHERE id = {$create_id}";
+			$query = "SELECT * FROM receipts WHERE id = {$create_id}";
 			$result = pg_query($query); // or die('Query failed: ' . pg_last_error());
 		}
 		
@@ -167,7 +167,7 @@ class AccountImage{
 			$offset_account = pg_escape_string($offset_account);
 		
 			// Construct SQL query
-			$query = "UPDATE entries SET "
+			$query = "UPDATE receipts SET "
 			."entry_date = '{$entry_date}', "
 			."text = '{$text}', "
 			."amount = {$amount}, "
@@ -203,7 +203,7 @@ class AccountImage{
 		$i=1;
 		foreach ($files as $file) {
 			$image_name=$this->getFirstPartOfName(basename($file));			
-			$query = "UPDATE entries SET image_name = '{$image_name}' WHERE image_id = {$i}";
+			$query = "UPDATE receipts SET image_name = '{$image_name}' WHERE image_id = {$i}";
 			$result = pg_query($query);
 			pg_free_result($result);
 			$i++;			
