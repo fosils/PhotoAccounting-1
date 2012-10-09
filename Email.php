@@ -25,7 +25,10 @@
                         print "customer_id: $customer_id\r\n";
 
                         $result = $db->CDV_Create($customer_id, $devicetoken);
-
+			
+			//If the result is false then the procedure failed.
+			//this means that the table structure changed or the database is altered in some
+			//other way.
                         if(!$result){
                                echo "<response><code>200</code></response>";
                                 exit();
