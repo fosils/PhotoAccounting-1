@@ -8,53 +8,46 @@
 	$folderName = $_REQUEST["devicetoken"];
 	$devicetoken = $folderName;
 	
-	//////////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////////
         // PostgreSql Code
         //////////////////////////////////////////////////////////////////////////////
-        $result = $db->CUST_GetByEmail($userEmail);
-        $result = (pg_num_rows($result) <= 0) ? null : pg_fetch_assoc($result);
         $customer_id = 0;
 
-        if(is_null($result)){
-                unset($result);
-
-                $result = $db->CUST_Create($userEmail);
-
-                if($result){
-                        unset($result);
-                        $result = $db->CUST_GetByEmail($userEmail);
-                        $result = (pg_num_rows($result) > 0) ? pg_fetch_assoc($result) : null;
-
-                        if(!is_null($result))
-                                $customer_id = $result["customer_id"];
-                        else{
-                                echo "<response><code>200</code></response>";
-                                exit();
-                        }
-                }
-
-        }else{
-                $customer_id = $result["customer_id"];
-        }
-	
-	if($customer_id <= 0){
-		print "<response><code>200</code></response>";
-		exit();
-	}
-
-        $result = $db->CDV_ExistsForCustomer($customer_id, $devicetoken);
+        $result = $db->CDV_Get($devicetoken);
         $result = (pg_num_rows($result) <= 0) ? null : pg_fetch_assoc($result);
 
         if(is_null($result)){
-                $result = $db->CDV_Create($customer_id, $devicetoken);
+                $result = create_customer($userEmail);
+                
+		if(!is_null($result)){
+                        $customer_id = $result["customer_id"];
+                        print "customer_id: $customer_id\r\n";
+
+                        $result = $db->CDV_Create($customer_id, $devicetoken);
+			
+			//If the result is false then the procedure failed.
+			//this means that the table structure changed or the database is altered in some
+			//other way.
+                        if(!$result){
+                               echo "<response><code>200</code></response>";
+                                exit();
+                        }
+                }else{
+                       echo "<response><code>200</code></response>";
+                       exit();
+                }
+        }else{
+                $customer_id = $result["customer_id"];
+
+                $result = $db->CUST_UpdateEmail($customer_id, $userEmail);
 
                 if(!$result){
                         echo "<response><code>200</code></response>";
                         exit();
                 }
         }
-        ///////////////////////////////////////////////////////////////////////////////
-	
+        //////////////////////////////////////////////////////////////////////////////	
 	
 	///////////////////////////////////////////////////////////////////
 	// S3 Code
