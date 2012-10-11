@@ -85,12 +85,6 @@ $accountImage->updateFileNames($files);
 <script src="js/accountsTable.js"></script>
 
 <script>
-	YUI_config = {
-		    debug: false,
-		    combine: false,
-		    Base: <?php echo "'https://".$_SERVER['HTTP_HOST'].str_replace("index.php", "", $_SERVER['PHP_SELF'])."'" ; ?>,
-		    root: '/js/YUI/build/'
-	};
 	var $ = function(id){
 		return document.getElementById(id);
 	}
