@@ -46,11 +46,11 @@ INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account
 INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account, offset_account) VALUES (27,'','2012-08-14','TEST 27',27,27,27); 
 
 DROP VIEW IF EXISTS rnum_next; 
-CREATE VIEW rnum_next AS SELECT customer_id, (max(receipt_number)+1) AS receipt_next FROM receipts GROUP BY customer_id ORDER BY customer_id;
+CREATE VIEW rnum_next AS SELECT customer_id, (MAX(receipt_number)+1) AS receipt_next FROM receipts GROUP BY customer_id ORDER BY customer_id;
 
 DROP TABLE IF EXISTS customers;
 CREATE TABLE customers (customer_id SERIAL PRIMARY KEY, email VARCHAR(255));
 CREATE UNIQUE INDEX email_idx ON customers(email);
 
 DROP TABLE IF EXISTS cust_devices;
-CREATE TABLE cust_devices(id serial PRIMARY KEY, customer_id int, udid VARCHAR(100));
+CREATE TABLE cust_devices(id serial PRIMARY KEY, customer_id INT, udid VARCHAR(100));
