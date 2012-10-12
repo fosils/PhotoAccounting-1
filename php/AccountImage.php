@@ -22,7 +22,7 @@ class AccountImage{
 		$image_id = pg_escape_string($imageID);
 		
 		// Performing SQL query
-		$query = "SELECT id, entry_date, text, amount, account, offset_account, image_name FROM receipts WHERE image_id = {$image_id}";
+		$query = "SELECT * FROM receipts WHERE id = {$image_id}";
 		$result = pg_query($query) or die('Query failed: ' . pg_last_error());
 		
 		// Get number of rows
@@ -30,7 +30,7 @@ class AccountImage{
 		
 		if ($rows == 0) {
 			// Insert a new row with default values and get its id
-			$create_query = "INSERT INTO receipts (customer_id, entry_id, image_id) VALUES (1, {$image_id}, {$image_id}) RETURNING id";
+			$create_query = "INSERT INTO receipts (customer_id) VALUES (1) RETURNING id";
 			$create_result = pg_query($create_query); // or die('Create query failed: ' . pg_last_error());
 			$create_row = pg_fetch_array($create_result);
 			$create_id = $create_row[0];
@@ -173,7 +173,7 @@ class AccountImage{
 			."amount = {$amount}, "
 			."account = {$account}, "
 			."offset_account = {$offset_account} "
-			."WHERE image_id = {$image_id}";
+			."WHERE id = {$image_id}";
 			$result = pg_query($query); // or die('Query failed: ' . pg_last_error());
 		
 			// Evaluate result
@@ -203,7 +203,7 @@ class AccountImage{
 		$i=1;
 		foreach ($files as $file) {
 			$image_name=$this->getFirstPartOfName(basename($file));			
-			$query = "UPDATE receipts SET image_name = '{$image_name}' WHERE image_id = {$i}";
+			$query = "UPDATE receipts SET image_name = '{$image_name}' WHERE id = {$i}";
 			$result = pg_query($query);
 			pg_free_result($result);
 			$i++;			
