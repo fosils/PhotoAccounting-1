@@ -8,7 +8,7 @@ DROP VIEW IF EXISTS rnum_next;
 DROP TABLE IF EXISTS receipts;
 CREATE TABLE receipts (	id SERIAL PRIMARY KEY, 
 						customer_id INT, 
-						receipt_number serial,
+						receipt_number SERIAL,
 						image_name CHARACTER VARYING(255), 
 						entry_date DATE DEFAULT current_date, 
 						text VARCHAR(9999), 
