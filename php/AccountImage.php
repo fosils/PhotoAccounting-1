@@ -22,7 +22,7 @@ class AccountImage{
 		$image_id = pg_escape_string($imageID);
 		
 		// Performing SQL query
-		$query = "SELECT id, entry_date, text, amount, account, offset_account, image_name FROM receipts WHERE id = {$image_id}";
+		$query = "SELECT * FROM receipts WHERE id = {$image_id}";
 		$result = pg_query($query) or die('Query failed: ' . pg_last_error());
 		
 		// Get number of rows
