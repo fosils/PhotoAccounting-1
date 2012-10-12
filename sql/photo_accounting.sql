@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS receipts;
 CREATE TABLE receipts (	id SERIAL PRIMARY KEY, 
 						customer_id INT, 
 						receipt_number serial,
-						image_type character varying(255), 
+						image_name character varying(255), 
 						entry_date DATE DEFAULT current_date, 
 						text VARCHAR(9999), 
 						amount NUMERIC(20, 2) DEFAULT 0.00, 
