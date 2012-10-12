@@ -4,7 +4,6 @@
 -- -- To execute this script within a PostgreSQL session (adjust path accordingly) :
 -- \i /home/pmg/Documents/photo_accounting/www/PhotoAccounting/sql/photo_accounting.sql
 
--- DROP TABLE IF EXISTS entries;
 drop view if exists rnum_next;
 DROP TABLE IF EXISTS receipts;
 CREATE TABLE receipts (	id SERIAL PRIMARY KEY, 
@@ -19,12 +18,8 @@ CREATE TABLE receipts (	id SERIAL PRIMARY KEY,
 						s3url varchar(300), 
 						received_date timestamp);
 
--- clear the table just in case
-delete from receipts;
-
 INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account, offset_account) VALUES (1,'','2012-08-14','TEST 1',1,1,1);
 INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account, offset_account) VALUES (2,'','2012-08-14','TEST 2',2,2,2);
--- INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account, offset_account) VALUES (3,'','2012-08-14','TEST 3',3,3,3);
 INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account, offset_account) VALUES (4,'','2012-08-14','TEST 4',4,4,4);
 INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account, offset_account) VALUES (5,'','2012-08-14','TEST 5',5,5,5);
 INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account, offset_account) VALUES (6,'','2012-08-14','TEST 6',6,6,6);
