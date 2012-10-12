@@ -1,22 +1,22 @@
--- --To create the database :
+-- --To CREATE the database :
 -- sudo -u postgres createdb photo_accounting
 
 -- -- To execute this script within a PostgreSQL session (adjust path accordingly) :
 -- \i /home/pmg/Documents/photo_accounting/www/PhotoAccounting/sql/photo_accounting.sql
 
-drop view if exists rnum_next;
+DROP VIEW IF EXISTS rnum_next;
 DROP TABLE IF EXISTS receipts;
 CREATE TABLE receipts (	id SERIAL PRIMARY KEY, 
 						customer_id INT, 
 						receipt_number serial,
-						image_name character varying(255), 
+						image_name CHARACTER VARYING(255), 
 						entry_date DATE DEFAULT current_date, 
 						text VARCHAR(9999), 
 						amount NUMERIC(20, 2) DEFAULT 0.00, 
 						account INT, 
 						offset_account INT, 
-						s3url varchar(300), 
-						received_date timestamp);
+						s3url VARCHAR(300), 
+						received_date TIMESTAMP);
 
 INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account, offset_account) VALUES (1,'','2012-08-14','TEST 1',1,1,1);
 INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account, offset_account) VALUES (2,'','2012-08-14','TEST 2',2,2,2);
@@ -45,12 +45,12 @@ INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account
 INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account, offset_account) VALUES (26,'','2012-08-14','TEST 26',26,26,26);
 INSERT INTO receipts (customer_id, image_type, entry_date, text, amount, account, offset_account) VALUES (27,'','2012-08-14','TEST 27',27,27,27); 
 
-drop view if exists rnum_next; 
-create view rnum_next as select customer_id, (max(receipt_number)+1) as receipt_next from receipts group by customer_id order by customer_id;
+DROP VIEW IF EXISTS rnum_next; 
+CREATE VIEW rnum_next AS SELECT customer_id, (max(receipt_number)+1) AS receipt_next FROM receipts GROUP BY customer_id ORDER BY customer_id;
 
 DROP TABLE IF EXISTS customers;
-CREATE TABLE customers (customer_id SERIAL PRIMARY KEY, email varchar(255));
+CREATE TABLE customers (customer_id SERIAL PRIMARY KEY, email VARCHAR(255));
 CREATE UNIQUE INDEX email_idx ON customers(email);
 
-drop table if exists cust_devices;
-create table cust_devices(id serial primary key, customer_id int, udid varchar(100));
+DROP TABLE IF EXISTS cust_devices;
+CREATE TABLE cust_devices(id serial PRIMARY KEY, customer_id int, udid VARCHAR(100));
