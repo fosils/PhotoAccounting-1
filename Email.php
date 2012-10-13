@@ -2,7 +2,7 @@
         require_once "aws-sdk/1.5.14/sdk.class.php";
         require_once "data/PhotoAccountingDatalayer.php";
 
-        $db = new PhotoAccountingDatalyer();
+        $db = new PhotoAccountingDatalayer();
 
 	$userEmail = $_REQUEST['email'];
 	$folderName = $_REQUEST["devicetoken"];
