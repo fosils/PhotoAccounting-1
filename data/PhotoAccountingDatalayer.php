@@ -3,7 +3,7 @@ require_once "PGDatalayer.php";
 
 class PhotoAccountingDatalyer extends PGDatalayer{
 	public function __construct(){
-		parent::__construct("localhost", "photo_accounting");
+		parent::__construct("localhost", "photo_accounting", "photo_editor", "Htbp4SAaxm6K");
 	}	
 	
 	/**
@@ -33,9 +33,20 @@ class PhotoAccountingDatalyer extends PGDatalayer{
 	/**
 	 * Receipts
 	 */	
-	public function RCT_Create($customer_id, $s3url){
-		return $this->Exec("insert into receipts(customer_id, s3url, received_date) values(:customer_id, :s3url, current_timestamp);", array(":customer_id"=>$customer_id, ":s3url"=>$s3url));
+	public function RCT_Create($customer_id){
+		return $this->Exec("insert into receipts(customer_id) values(:customer_id) RETURNING id",array(":customer_id"=>$customer_id));
 	}
+	public function RCT_GetById($id){
+		return $this->Exec(" select * from receipts where id=:id",array(":id"=>$id));
+	}
+	public function RCT_Update($entry_date, $text, $amount, $account, $offset_account, $id){
+		return $this->Exec("update receipts set entry_date=:entry_date, text=:text, amount=:amount, account=:account, offset_account=:offset_account where id=:id", 
+				array(":entry_date"=>$entry_date, ":text"=>$text, ":amount"=>$amount, ":account"=>$account, ":offset_account"=>$offset_account, ":id"=>$id));
+	}
+	public function RCT_UpdateImageName($image_name, $id){
+		return $this->Exec("update receipts set image_name=:image_name  where id=:id", array(":image_name"=>$image_name, ":id"=>$id));
+	}
+
 	/**
 	 * Customer Receipts
 	 */
