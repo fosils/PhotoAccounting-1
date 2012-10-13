@@ -39,8 +39,8 @@ class PhotoAccountingDatalayer extends PGDatalayer{
 	public function RCT_GetById($id){
 		return $this->Exec(" SELECT * FROM receipts WHERE id=:id",array(":id"=>$id));
 	}
-	public function RCT_Update($entry_date, $text, $amount, $account, $offset_account, $id){
-		return $this->Exec("UPDATE receipts SET entry_date=:entry_date, text=:text, amount=:amount, account=:account, offset_account=:offset_account WHERE id=:id", array(":entry_date"=>$entry_date, ":text"=>$text, ":amount"=>$amount, ":account"=>$account, ":offset_account"=>$offset_account, ":id"=>$id));
+	public function RCT_Update($entry_date, $text, $amount, $account, $vat_code, $offset_account, $id){
+		return $this->Exec("UPDATE receipts SET entry_date=:entry_date, text=:text, amount=:amount, account=:account, vat_code=:vat_code, offset_account=:offset_account WHERE id=:id", array(":entry_date"=>$entry_date, ":text"=>$text, ":amount"=>$amount, ":account"=>$account, ":vat_code"=>$vat_code, ":offset_account"=>$offset_account, ":id"=>$id));
 	}
 	public function RCT_UpdateImageName($image_name, $id){
 		return $this->Exec("UPDATE receipts SET image_name=:image_name  WHERE id=:id", array(":image_name"=>$image_name, ":id"=>$id));
