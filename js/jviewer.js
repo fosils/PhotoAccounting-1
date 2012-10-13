@@ -7,7 +7,7 @@ JSViewer = function () {
     // Globals
     var my_key_codes, my_image_count, current_image_index,
         $, renderImage, showPrevImage, showNextImage,
-        keyDownHandler, keyUpHandler, keyPressHandler, setKeyboardHandlers,
+        keyDownHandler, keyUpHandler, keyPressHandler, setKeyboardHandlers, isShiftPressed,
         toggleArrows, addArrows,
         loadImage, images,
         cacheGroup, log,
@@ -144,6 +144,7 @@ JSViewer = function () {
             $('jsv_text').value = obj.text;
             $('jsv_amount').value = obj.amount;
             $('jsv_account').value = obj.account;
+            $('jsv_vat_code').value = obj.vat_code;
             $('jsv_offset_account').value = obj.offset_account;
             Y.one('#jsv_image_name').setHTML(obj.image_name);
         }
@@ -157,6 +158,7 @@ JSViewer = function () {
             Y.one('#error_text').setHTML(errors.text);
             Y.one('#error_amount').setHTML(errors.amount);
             Y.one('#error_account').setHTML(errors.account);
+            Y.one('#error_vat_code').setHTML(errors.vat_code);
             Y.one('#error_offset_account').setHTML(errors.offset_account);
 
             // // The next one is a general error not related to any field
@@ -175,7 +177,7 @@ JSViewer = function () {
      * @return {null}
      */
     saveImageDetail = function (Y, current_image_index) {
-        var ddate, image_id, text, amount, account, offset_account, obj;
+        var ddate, image_id, text, amount, account, vat_code, offset_account, obj;
 
         // Skip saving to database if:
         // 1) image does not exists i.e. pressing 'w' at the last image
@@ -191,8 +193,8 @@ JSViewer = function () {
         text = $('jsv_text').value;
         amount = $('jsv_amount').value;
         account = $('jsv_account').value;
+        vat_code = $('jsv_vat_code').value;
         offset_account = $('jsv_offset_account').value;
-
         // Get obj in RAM
         obj = image_details[image_id];
 
@@ -204,7 +206,7 @@ JSViewer = function () {
         // If there is a difference between the object in RAM
         // and the field values, save object.
         // NOTE : "undefined" is not the same as an empty string :)
-        if (obj.date == ddate && obj.text == text && obj.amount == amount && obj.account == account && obj.offset_account == offset_account) {
+        if (obj.date == ddate && obj.text == text && obj.amount == amount && obj.account == account && obj.offset_account == offset_account && obj.vat_code == vat_code) {
 
             log('no need to save ' + image_id);
 
@@ -215,6 +217,7 @@ JSViewer = function () {
             obj.text = text;
             obj.amount = amount;
             obj.account = account;
+            obj.vat_code = vat_code;
             obj.offset_account = offset_account;
             image_details[image_id] = obj;
 
@@ -238,6 +241,7 @@ JSViewer = function () {
                     + "&text=" + text
                     + "&amount=" + amount
                     + "&account=" + account
+                    + "&vat_code=" + vat_code
                     + "&offset_account=" + offset_account,
                 // Abort the transaction, if it is still pending, after 3000ms.
                 timeout : 3000,
@@ -469,16 +473,25 @@ JSViewer = function () {
             }
 
             var a = Array();
+
             document.hotkey = false;
             for (var i = 1; i < rows.length; i++) {
                 if ( e.keyCode ==  rows[i].children[3].children[0].getAttribute('data') ) {
                     document.hotkey = true;
                     document.getElementById('jsv_account').value = rows[i].children[0].innerHTML;
                     document.getElementById('account_name').innerHTML = rows[i].children[1].innerHTML;
+                    if(!isShiftPressed){
+                    	document.getElementById('jsv_vat_code').value = rows[i].children[2].innerHTML;
+                    } else {
+                        //check if vat_code is this same that bind on hotkey
+                    	// if this same set empty value
+                    	if(rows[i].children[2].innerHTML.replace(/^\s+|\s+$/g,"") == document.getElementById('jsv_vat_code').value.replace(/^\s+|\s+$/g,"")) {
+                       		document.getElementById('jsv_vat_code').value ="";
+                       	}
+                    }
                     break;
                 }
             }
-
             switch (e.keyCode) {
             case 13: // enter
             case 87: // w (next)
@@ -488,7 +501,10 @@ JSViewer = function () {
             case 81: //q (previous)
                 showPrevImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
                 document.hotkey = true;
-                break;
+                break; 
+            case 16:// shift (if pressed then hotkey will clear vat_code field)
+            	isShiftPressed=true;
+            	break;
             }
         };
     };
@@ -504,6 +520,8 @@ JSViewer = function () {
      */
     keyUpHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
+        	// set isShiftPressed false (hotkey will not clear field)
+        	isShiftPressed=false;
             if(document.activeElement.id == "jsv_text") return;
             var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                 .children[1].children[0].getElementsByTagName("tr");
