@@ -148,6 +148,12 @@ $accountImage->updateFileNames($files);
 						<span id="account_name" class="account_name"></span>
 					</div>
 				</li>
+				<li><label for="jsv_vat_code">VAT</label>
+					<div>
+						<input type="text" name="jsv_vat_code" id="jsv_vat_code" size="10" />
+						<span id="error_vat_code" class="field_error"></span>
+					</div>
+				</li>
 				<li><label for="jsv_amount">Amount</label>
 					<div>
 						<input type="text" name="jsv_amount" id="jsv_amount" size="10" /><span
