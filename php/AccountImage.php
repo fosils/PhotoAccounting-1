@@ -1,5 +1,4 @@
 <?php
-require_once "/../data/PhotoAccountingDatalayer.php";
 class AccountImage{
 
 	public function getImageDetail($imageID){
@@ -20,6 +19,7 @@ class AccountImage{
 		$image_id = pg_escape_string($imageID);
 		
 		// Performing SQL query
+		require_once "/../data/PhotoAccountingDatalayer.php";
 		$db = new PhotoAccountingDatalyer();
 		$result=$db->RCT_GetById($image_id);
 		
@@ -27,10 +27,9 @@ class AccountImage{
 		
 		// Get number of rows
 		$rows = pg_num_rows($result);
-		
 		if ($rows == 0) {
 			// Insert a new row with default values and get its id
-			$create_result=$db->RCT_Create(1);
+			$create_result=$db->RCT_Create(1,'');
 			$create_row = pg_fetch_array($create_result);
 			$create_id = $create_row[0];
 			// Get the newly created row. Yes, we intentionally overwrite the earlier '$result' variable
@@ -153,6 +152,7 @@ class AccountImage{
 			$offset_account = pg_escape_string($offset_account);
 		
 			// SQL query
+			require_once "/../data/PhotoAccountingDatalayer.php";
 			$db = new PhotoAccountingDatalyer();
 			$result=$db->RCT_Update($entry_date, $text, $amount, $account, $offset_account, $image_id);
 			
@@ -175,11 +175,12 @@ class AccountImage{
 	}
 	
 	public function updateFileNames($files){
+		require_once "/../data/PhotoAccountingDatalayer.php";
 		$db = new PhotoAccountingDatalyer();
 		$i=1;
 		foreach ($files as $file) {
 			$image_name=$this->getFirstPartOfName(basename($file));			
-			$db->RCT_Update($image_name, $i);
+			$db->RCT_UpdateImageName($image_name, $i);
 			$i++;			
 		}	
 	}
