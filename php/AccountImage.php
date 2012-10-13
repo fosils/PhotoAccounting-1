@@ -27,7 +27,7 @@ class AccountImage{
 		
 		// Get number of rows
 		$rows = pg_num_rows($result);
-		if ($rows == 0) {
+		if(is_null($result)){
 			// Insert a new row with default values and get its id
 			$create_result=$db->RCT_Create(1,'');
 			$create_row = pg_fetch_array($create_result);
