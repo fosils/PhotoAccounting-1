@@ -19,7 +19,7 @@ class AccountImage{
 		$image_id = pg_escape_string($imageID);
 		
 		// Performing SQL query
-		require_once "/../data/PhotoAccountingDatalayer.php";
+		require_once "../data/PhotoAccountingDatalayer.php";
 		$db = new PhotoAccountingDatalyer();
 		$result=$db->RCT_GetById($image_id);
 		
@@ -152,7 +152,7 @@ class AccountImage{
 			$offset_account = pg_escape_string($offset_account);
 		
 			// SQL query
-			require_once "/../data/PhotoAccountingDatalayer.php";
+			require_once "../data/PhotoAccountingDatalayer.php";
 			$db = new PhotoAccountingDatalyer();
 			$result=$db->RCT_Update($entry_date, $text, $amount, $account, $offset_account, $image_id);
 			
@@ -175,7 +175,7 @@ class AccountImage{
 	}
 	
 	public function updateFileNames($files){
-		require_once "/../data/PhotoAccountingDatalayer.php";
+		require_once "data/PhotoAccountingDatalayer.php";
 		$db = new PhotoAccountingDatalyer();
 		$i=1;
 		foreach ($files as $file) {
