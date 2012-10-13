@@ -116,8 +116,7 @@ class PGDatalayer
 	 */
 	function connect(){
 			
-			$this->pglink = pg_connect("host=$this->hostName dbname=$this->dbName user=postgres");
-			
+			$this->pglink = pg_connect("host=$this->hostName dbname=$this->dbName user=$this->userName password=$this->password");
 			$this->ceMsg = pg_last_error($this->pglink);
 			
 			$method = __METHOD__;

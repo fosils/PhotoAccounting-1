@@ -15,29 +15,25 @@ class AccountImage{
 			die("Invalid request");
 		}
 		
-		// $dbconn is declared in this "include_once"
-		require_once "includes/db.php";
 		
-		// Sanitize database inputs
 		$image_id = pg_escape_string($imageID);
 		
 		// Performing SQL query
-		$query = "SELECT * FROM receipts WHERE id = {$image_id}";
-		$result = pg_query($query) or die('Query failed: ' . pg_last_error());
+		require_once "../data/PhotoAccountingDatalayer.php";
+		$db = new PhotoAccountingDatalyer();
+		$result=$db->RCT_GetById($image_id);
+		
+
 		
 		// Get number of rows
 		$rows = pg_num_rows($result);
-		
 		if ($rows == 0) {
 			// Insert a new row with default values and get its id
-			$create_query = "INSERT INTO receipts (customer_id) VALUES (1) RETURNING id";
-			$create_result = pg_query($create_query); // or die('Create query failed: ' . pg_last_error());
+			$create_result=$db->RCT_Create(1,'');
 			$create_row = pg_fetch_array($create_result);
 			$create_id = $create_row[0];
-		
 			// Get the newly created row. Yes, we intentionally overwrite the earlier '$result' variable
-			$query = "SELECT * FROM receipts WHERE id = {$create_id}";
-			$result = pg_query($query); // or die('Query failed: ' . pg_last_error());
+			$result=$db->RCT_GetById($create_id);
 		}
 		
 		// If a record was found, set it
@@ -61,14 +57,6 @@ class AccountImage{
 			$detail->offset_account = $row['offset_account'];
 			$detail->image_name = $row['image_name'];
 		}
-		
-		// Free resultset
-		pg_free_result($result);
-		
-		// Closing connection
-		pg_close($dbconn);
-		
-		// Print results in JSON
 		echo json_encode($detail);		
 	}
 	
@@ -78,9 +66,6 @@ class AccountImage{
 		if (!isset($imageID) || empty($imageID) || $imageID < 1) {
 			die();
 		}
-		
-		// $dbconn is declared in this "include_once"
-		require_once "includes/db.php";
 		
 		// Extract request parameters trimming spaces as well
 		$image_id = trim($imageID);
@@ -166,15 +151,11 @@ class AccountImage{
 			$account = pg_escape_string($account);
 			$offset_account = pg_escape_string($offset_account);
 		
-			// Construct SQL query
-			$query = "UPDATE receipts SET "
-			."entry_date = '{$entry_date}', "
-			."text = '{$text}', "
-			."amount = {$amount}, "
-			."account = {$account}, "
-			."offset_account = {$offset_account} "
-			."WHERE id = {$image_id}";
-			$result = pg_query($query); // or die('Query failed: ' . pg_last_error());
+			// SQL query
+			require_once "../data/PhotoAccountingDatalayer.php";
+			$db = new PhotoAccountingDatalyer();
+			$result=$db->RCT_Update($entry_date, $text, $amount, $account, $offset_account, $image_id);
+			
 		
 			// Evaluate result
 			if (!$result) {
@@ -183,32 +164,25 @@ class AccountImage{
 			$detail->status = 0;
 			$detail->errors = $errors;
 			}
-		
-			// Free resultset
-			pg_free_result($result);
+
 		} else {
 			$detail->status = 0;
 			$detail->errors = $errors;
 			}
-		
-			// Closing connection
-			pg_close($dbconn);
 		
 			// Print results in JSON
 			echo json_encode($detail);		
 	}
 	
 	public function updateFileNames($files){
-		require_once "includes/db.php";
+		require_once "data/PhotoAccountingDatalayer.php";
+		$db = new PhotoAccountingDatalyer();
 		$i=1;
 		foreach ($files as $file) {
 			$image_name=$this->getFirstPartOfName(basename($file));			
-			$query = "UPDATE receipts SET image_name = '{$image_name}' WHERE id = {$i}";
-			$result = pg_query($query);
-			pg_free_result($result);
+			$db->RCT_UpdateImageName($image_name, $i);
 			$i++;			
 		}	
-		pg_close($dbconn);
 	}
 	
 	private function getFirstPartOfName($name){
