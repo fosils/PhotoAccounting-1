@@ -1,7 +1,7 @@
 <?php
 require_once "PGDatalayer.php";
 
-class PhotoAccountingDatalyer extends PGDatalayer{
+class PhotoAccountingDatalayer extends PGDatalayer{
 	public function __construct(){
 		parent::__construct("localhost", "photo_accounting", "photo_editor", "Htbp4SAaxm6K");
 	}	
@@ -64,7 +64,7 @@ class PhotoAccountingDatalyer extends PGDatalayer{
 }
 
 function create_customer($email=null){
-	$db = new PhotoAccountingDatalyer();
+	$db = new PhotoAccountingDatalayer();
 	
 	if(!is_null($email)){
 		$result = $db->CUST_GetByEmail($email);	

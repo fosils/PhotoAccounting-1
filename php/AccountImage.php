@@ -20,7 +20,7 @@ class AccountImage{
 		
 		// Performing SQL query
 		require_once "../data/PhotoAccountingDatalayer.php";
-		$db = new PhotoAccountingDatalyer();
+		$db = new PhotoAccountingDatalayer();
 		$result=$db->RCT_GetById($image_id);
 		
 
@@ -153,7 +153,7 @@ class AccountImage{
 		
 			// SQL query
 			require_once "../data/PhotoAccountingDatalayer.php";
-			$db = new PhotoAccountingDatalyer();
+			$db = new PhotoAccountingDatalayer();
 			$result=$db->RCT_Update($entry_date, $text, $amount, $account, $offset_account, $image_id);
 			
 		
@@ -176,7 +176,7 @@ class AccountImage{
 	
 	public function updateFileNames($files){
 		require_once "data/PhotoAccountingDatalayer.php";
-		$db = new PhotoAccountingDatalyer();
+		$db = new PhotoAccountingDatalayer();
 		$i=1;
 		foreach ($files as $file) {
 			$image_name=$this->getFirstPartOfName(basename($file));			
