@@ -520,8 +520,6 @@ JSViewer = function () {
      */
     keyUpHandler = function (Y, total_number_images, POST_CACHE, PRE_CACHE) {
         return function (e) {
-        	// set isShiftPressed false (hotkey will not clear field)
-        	isShiftPressed=false;
             if(document.activeElement.id == "jsv_text") return;
             var rows = document.getElementById(window.accountsTable.get('id')).children[0].children[2]
                 .children[1].children[0].getElementsByTagName("tr");
@@ -538,6 +536,8 @@ JSViewer = function () {
                 if ( e.keyCode ==  rows[i].children[3].children[0].getAttribute('data') ) {
                     document.getElementById('account_name').innerHTML = "";
                     showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
+                    // set isShiftPressed false (hotkey will not clear field)
+                    isShiftPressed=false;
                     break;
                 }
             }
