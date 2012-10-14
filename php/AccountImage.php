@@ -27,7 +27,7 @@ class AccountImage{
 		
 		// Get number of rows
 		$rows = pg_num_rows($result);
-		if ($rows == 0) {
+		if(is_null($result)){
 			// Insert a new row with default values and get its id
 			$create_result=$db->RCT_Create(1,'');
 			$create_row = pg_fetch_array($create_result);
@@ -54,6 +54,7 @@ class AccountImage{
 			$detail->text = $row['text'];
 			$detail->amount = $row['amount'];
 			$detail->account = $row['account'];
+			$detail->vat_code = $row['vat_code'];
 			$detail->offset_account = $row['offset_account'];
 			$detail->image_name = $row['image_name'];
 		}
@@ -73,6 +74,7 @@ class AccountImage{
 		$text = trim($_POST['text']);
 		$amount = trim($_POST['amount']);
 		$account = trim($_POST['account']);
+		$vat_code= trim($_POST['vat_code']);
 		$offset_account = trim($_POST['offset_account']);
 		
 		// START : validation
@@ -122,6 +124,16 @@ class AccountImage{
 			}
 		}
 		
+		// Check vat_code
+		if (empty($vat_code)) {
+			$vat_code = '';
+		} else {
+			// max length vat_code is 10 chars
+			if (strlen($vat_code) > 10) {
+				$errors['vat_code'] = 'Maximu lenght vat code is 10 chars';
+			}
+		}
+		
 		// Check offset_account
 		if (empty($offset_account)) {
 			$offset_account = 'null';
@@ -149,12 +161,13 @@ class AccountImage{
 			$text = pg_escape_string($text);
 			$amount = pg_escape_string($amount);
 			$account = pg_escape_string($account);
+			$vat_code = pg_escape_string($vat_code);
 			$offset_account = pg_escape_string($offset_account);
 		
 			// SQL query
 			require_once "../data/PhotoAccountingDatalayer.php";
 			$db = new PhotoAccountingDatalayer();
-			$result=$db->RCT_Update($entry_date, $text, $amount, $account, $offset_account, $image_id);
+			$result=$db->RCT_Update($entry_date, $text, $amount, $account, $vat_code, $offset_account, $image_id);
 			
 		
 			// Evaluate result

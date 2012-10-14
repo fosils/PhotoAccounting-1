@@ -14,6 +14,7 @@ CREATE TABLE receipts (	id SERIAL PRIMARY KEY,
 						text VARCHAR(9999), 
 						amount NUMERIC(20, 2) DEFAULT 0.00, 
 						account INT, 
+						vat_code VARCHAR(10),
 						offset_account INT, 
 						s3url VARCHAR(300), 
 						received_date TIMESTAMP);
