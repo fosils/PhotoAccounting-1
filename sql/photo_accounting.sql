@@ -20,18 +20,18 @@ CREATE TABLE receipts (	id SERIAL PRIMARY KEY,
 						received_date TIMESTAMP);
 
 INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (1,'','2012-08-14','TEST 1',1,1,1);
-INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (2,'','2012-08-14','TEST 2',2,2,2);
-INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (4,'','2012-08-14','TEST 4',4,4,4);
-INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (5,'','2012-08-14','TEST 5',5,5,5);
-INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (6,'','2012-08-14','TEST 6',6,6,6);
-INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (7,'','2012-08-14','TEST 7',7,7,7);
-INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (8,'','2012-08-14','TEST 8',8,8,8);
+INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (1,'','2012-08-14','TEST 2',2,2,2);
+INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (1,'','2012-08-14','TEST 4',4,4,4);
+INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (1,'','2012-08-14','TEST 5',5,5,5);
+INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (2,'','2012-08-14','TEST 6',6,6,6);
+INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (3,'','2012-08-14','TEST 7',7,7,7);
+INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (3,'','2012-08-14','TEST 8',8,8,8);
 
 DROP VIEW IF EXISTS rnum_next; 
 CREATE VIEW rnum_next AS SELECT customer_id, (MAX(receipt_number)+1) AS receipt_next FROM receipts GROUP BY customer_id ORDER BY customer_id;
 
 DROP TABLE IF EXISTS customers;
-CREATE TABLE customers (customer_id SERIAL PRIMARY KEY, email VARCHAR(255));
+CREATE TABLE customers (id SERIAL PRIMARY KEY, email VARCHAR(255));
 CREATE UNIQUE INDEX email_idx ON customers(email);
 
 DROP TABLE IF EXISTS cust_devices;
