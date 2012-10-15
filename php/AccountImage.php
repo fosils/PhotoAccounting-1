@@ -57,6 +57,7 @@ class AccountImage{
 			$detail->vat_code = $row['vat_code'];
 			$detail->offset_account = $row['offset_account'];
 			$detail->image_name = $row['image_name'];
+			$detail->deleted = $row['deleted'];
 		}
 		echo json_encode($detail);		
 	}
@@ -196,6 +197,41 @@ class AccountImage{
 			$db->RCT_UpdateImageName($image_name, $i);
 			$i++;			
 		}	
+	}
+	
+	public function markImageAsDeleted($imageID){
+		// Abort early if there is nothing to process
+		if (!isset($imageID) || empty($imageID) || $imageID < 1) {
+			die();
+		}
+		// Extract request parameters trimming spaces as well
+		$image_id = trim($imageID);
+		$deleted = trim($_POST['deleted']);
+	
+		// Check deleted field
+		if (!($deleted=='0' || $deleted=='1')) {
+			$errors['deleted'] = 'Deleted value must be 0 OR 1';
+		}
+	
+		// Init the returned object
+		$detail = new stdClass;
+		$detail->status = 1;
+		$detail->image_id = (int)$image_id;
+		$image_id = pg_escape_string($image_id);
+	
+		// SQL query
+		require_once "../data/PhotoAccountingDatalayer.php";
+		$db = new PhotoAccountingDatalayer();
+		$result=$db->RCT_SetImageAsDeleted($image_id,$deleted);
+			
+		// Evaluate result
+		if (!$result) {
+			$errors['common'] = pg_last_error();
+			$detail->status = 0;
+			$detail->errors = $errors;
+		}
+		// Print results in JSON
+		echo json_encode($detail);
 	}
 	
 	private function getFirstPartOfName($name){

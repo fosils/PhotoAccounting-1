@@ -45,6 +45,9 @@ class PhotoAccountingDatalayer extends PGDatalayer{
 	public function RCT_UpdateImageName($image_name, $id){
 		return $this->Exec("UPDATE receipts SET image_name=:image_name WHERE id=:id", array(":image_name"=>$image_name, ":id"=>$id));
 	}
+	public function RCT_SetImageAsDeleted($id, $deleted){
+		return $this->Exec("UPDATE receipts SET deleted=:deleted  WHERE id=:id", array(":id"=>$id, ":deleted"=>$deleted));
+	}
 
 	/**
 	 * Customer Receipts

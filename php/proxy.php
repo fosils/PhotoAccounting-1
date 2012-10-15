@@ -15,4 +15,9 @@ switch($_REQUEST['function']){
 		$accoutImage = new AccountImage();
 		$accoutImage->setImageDetail($_POST['image_id']);
 		break;
+	case 'mark_image_as_deleted':
+		require_once 'AccountImage.php';
+		$accoutImage = new AccountImage();
+		$accoutImage->markImageAsDeleted($_POST['image_id']);
+		break;
 }
