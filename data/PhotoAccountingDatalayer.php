@@ -19,10 +19,10 @@ class PhotoAccountingDatalayer extends PGDatalayer{
 		return $this->Exec("SELECT * FROM customers WHERE email=:email ORDER BY customer_id DESC LIMIT 1;", array(":email"=>$email));
 	}
 	public function CUST_GetFirstEmpty(){
-		return $this->Exec("SELECT * FROM customers WHERE email is null ORDER BY customer_id LIMIT 1");
+		return $this->Exec("SELECT * FROM customers WHERE email IS NULL ORDER BY customer_id LIMIT 1");
 	}
 	public function CUST_GetLastEmpty(){
-		return $this->Exec("SELECT * FROM customers WHERE email is null ORDER BY customer_id DESC LIMIT 1");
+		return $this->Exec("SELECT * FROM customers WHERE email IS NULL ORDER BY customer_id DESC LIMIT 1");
 	}
 	public function CUST_GetByID($id){
 		return $this->Exec("SELECT * FROM customers WHERE customer_id=:customer_id;", array(":customer_id"=>$id));
