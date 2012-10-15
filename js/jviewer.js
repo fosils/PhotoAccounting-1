@@ -7,14 +7,14 @@ JSViewer = function () {
     // Globals
     var my_key_codes, my_image_count, current_image_index,
         $, renderImage, showPrevImage, showNextImage,
-        keyDownHandler, keyUpHandler, keyPressHandler, setKeyboardHandlers, isShiftPressed,
+        keyDownHandler, keyUpHandler, keyPressHandler, setKeyboardHandlers, isShiftPressed,isDeletePressed,
         toggleArrows, addArrows,
         loadImage, images,
         cacheGroup, log,
         // // START : image details
         image_details, image_errors, general_error, displayFlashError,
         restrict_db_update, onDbUpdateFailure,
-        loadImageDetail, populateImageDetail, saveImageDetail;
+        loadImageDetail, populateImageDetail, saveImageDetail,markImageDeleted;
         // // END : image details
 
     images = {};
@@ -147,6 +147,11 @@ JSViewer = function () {
             $('jsv_vat_code').value = obj.vat_code;
             $('jsv_offset_account').value = obj.offset_account;
             Y.one('#jsv_image_name').setHTML(obj.image_name);
+            if (obj.deleted=='0') {
+          	  	Y.one('#image_deleted_info').setHTML('');
+            } else {
+            	Y.one('#image_deleted_info').setHTML('Deleted');
+            }
         }
 
         image_id = current_image_index + 1;
@@ -299,6 +304,94 @@ JSViewer = function () {
             });
 
         }
+    };
+    
+    /**
+     * Requset to mark image as deleted on database
+     *
+     * @param {Y} Yui3 object
+     * @param {current_image_index} The index of the current displayed image
+     * @return {null}
+     */
+    markImageDeleted = function (Y, current_image_index) {
+        var image_id,obj, deleted;
+        if(!isDeletePressed) return;
+        // Skip saving to database if:
+        // 1) image does not exists i.e. pressing 'w' at the last image
+        if (current_image_index == my_image_count) {
+            return;
+        }
+
+        image_id = current_image_index + 1;
+
+        // Update object in RAM
+        obj = image_details[image_id];
+        // image alredy marked as deleted so return;
+        if(obj.deleted==1) {
+        	obj.deleted=0;
+        	deleted=0;
+        } else deleted=1;
+        // Update object in RAM
+        obj.deleted=deleted;
+        image_details[image_id] = obj;
+
+        // Subscribe function 'onDbUpdateFailure' to "io.failure" i.e. timeout,
+        // passing it Y & the affected image id when that happens
+        Y.on('io:failure', onDbUpdateFailure, Y,
+            // 'Transaction Failed'
+            [Y, image_id]
+        );
+
+        Y.io("php/proxy.php?function=mark_image_as_deleted", {
+            // // this is a post
+            method: 'POST',
+            data : "image_id=" +  image_id + "&deleted=" + deleted,
+            timeout : 3000,
+            // Ajax lifecycle event handlers
+            on: {
+                start: function (id) {
+                	if(deleted==0) log('mark image as undeleted ' + image_id + ' ...');
+                	else  log('mark image as deleted ' + image_id + ' ...');
+                    
+
+                    // Prevent other threads from overwriting the user's
+                    // typed in values while the request is in progress.
+                    restrict_db_update[image_id] = true;
+                },
+                complete: function (id, response) {
+                   var jsonObject = Y.JSON.parse(response.responseText);
+                    if(deleted==0) {
+                    	log(image_id + ' marked as undeleted'); 
+                    	Y.one('#image_deleted_info').setHTML('');
+                    }
+                    else {
+                    	log(image_id + ' marked as deleted'); 
+                    	Y.one('#image_deleted_info').setHTML('Deleted');
+                    }
+                    log(jsonObject);
+
+                    if (jsonObject.status == 0) {
+                        image_errors[image_id] = jsonObject.errors;
+                    }
+
+                    if (jsonObject.status == 1) {
+                        // Remove its errors
+                        delete image_errors[image_id];
+
+                        // Remove update restriction
+                        delete restrict_db_update[image_id];
+                   }
+
+                    // // Clear the general error as we can connect
+                    // // to the server just fine
+                    general_error = '';
+
+                    // // Update the flash_errors div to notify
+                    // // users that there is/are error(s)
+                    displayFlashError(Y);
+                }
+            }
+        });
     };
 
     /**
@@ -505,6 +598,13 @@ JSViewer = function () {
             case 16:// shift (if pressed then hotkey will clear vat_code field)
             	isShiftPressed=true;
             	break;
+            case 46: //delete (previous)
+            	if(!isDeletePressed) {
+            		// set flag to prevent multi key down event (and multirequest to database) if hold delete key
+            		isDeletePressed=true;
+	                markImageDeleted(Y, current_image_index);
+            	}
+                break; 
             }
         };
     };
@@ -540,6 +640,11 @@ JSViewer = function () {
                     isShiftPressed=false;
                     break;
                 }
+            }
+            // set flag isDeletePressed to false 
+            if ( e.keyCode == 46) {
+            	isDeletePressed=false;
+            	showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
             }
         };
     };
