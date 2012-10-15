@@ -38,7 +38,7 @@
                 			$result = create_customer();
 
                 			if(!is_null($result)){
-			                        $customer_id = $result["customer_id"];
+			                        $customer_id = $result["id"];
 
                         			$result = $db->CDV_Create($customer_id, $devicetoken);
 

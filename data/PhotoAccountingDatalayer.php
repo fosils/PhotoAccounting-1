@@ -16,19 +16,19 @@ class PhotoAccountingDatalayer extends PGDatalayer{
 		return $this->Exec("INSERT INTO customers(email) VALUES(null);");
 	}
 	public function CUST_GetByEmail($email){
-		return $this->Exec("SELECT * FROM customers WHERE email=:email ORDER BY customer_id DESC LIMIT 1;", array(":email"=>$email));
+		return $this->Exec("SELECT * FROM customers WHERE email=:email ORDER BY id DESC LIMIT 1;", array(":email"=>$email));
 	}
 	public function CUST_GetFirstEmpty(){
-		return $this->Exec("SELECT * FROM customers WHERE email IS NULL ORDER BY customer_id LIMIT 1");
+		return $this->Exec("SELECT * FROM customers WHERE email IS NULL ORDER BY id LIMIT 1");
 	}
 	public function CUST_GetLastEmpty(){
-		return $this->Exec("SELECT * FROM customers WHERE email IS NULL ORDER BY customer_id DESC LIMIT 1");
+		return $this->Exec("SELECT * FROM customers WHERE email IS NULL ORDER BY id DESC LIMIT 1");
 	}
 	public function CUST_GetByID($id){
-		return $this->Exec("SELECT * FROM customers WHERE customer_id=:customer_id;", array(":customer_id"=>$id));
+		return $this->Exec("SELECT * FROM customers WHERE id=:id;", array(":id"=>$id));
 	}
 	public function CUST_UpdateEmail($customer_id, $email){
-		return $this->Exec("UPDATE customers SET email=:email WHERE customer_id=:customer_id;", array(":customer_id"=>$customer_id, ":email"=>$email));
+		return $this->Exec("UPDATE customers SET email=:email WHERE id=:id;", array(":id"=>$customer_id, ":email"=>$email));
 	}
 	/**
 	 * Receipts
@@ -43,7 +43,7 @@ class PhotoAccountingDatalayer extends PGDatalayer{
 		return $this->Exec("UPDATE receipts SET entry_date=:entry_date, text=:text, amount=:amount, account=:account, vat_code=:vat_code, offset_account=:offset_account WHERE id=:id", array(":entry_date"=>$entry_date, ":text"=>$text, ":amount"=>$amount, ":account"=>$account, ":vat_code"=>$vat_code, ":offset_account"=>$offset_account, ":id"=>$id));
 	}
 	public function RCT_UpdateImageName($image_name, $id){
-		return $this->Exec("UPDATE receipts SET image_name=:image_name  WHERE id=:id", array(":image_name"=>$image_name, ":id"=>$id));
+		return $this->Exec("UPDATE receipts SET image_name=:image_name WHERE id=:id", array(":image_name"=>$image_name, ":id"=>$id));
 	}
 
 	/**

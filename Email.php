@@ -21,7 +21,7 @@
                 $result = create_customer($userEmail);
                 
 		if(!is_null($result)){
-                        $customer_id = $result["customer_id"];
+                        $customer_id = $result["id"];
                         print "customer_id: $customer_id\r\n";
 
                         $result = $db->CDV_Create($customer_id, $devicetoken);
@@ -38,7 +38,7 @@
                        exit();
                 }
         }else{
-                $customer_id = $result["customer_id"];
+                $customer_id = $result["id"];
 
                 $result = $db->CUST_UpdateEmail($customer_id, $userEmail);
 
