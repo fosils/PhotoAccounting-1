@@ -44,3 +44,12 @@ div#flash_errors {
 	padding-bottom:3px;
 	color:#FF2211;
 }
+div#image_deleted_info {
+	height:30px;
+	font-size:2em;
+	padding-top:3px;
+	padding-bottom:3px;
+	color:#FF2211;
+	position:absolute;
+	top:25px;
+}
