@@ -19,14 +19,6 @@ CREATE TABLE receipts (	id SERIAL PRIMARY KEY,
 						s3url VARCHAR(300), 
 						received_date TIMESTAMP);
 
-INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (1,'','2012-08-14','TEST 1',1,1,1);
-INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (1,'','2012-08-14','TEST 2',2,2,2);
-INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (1,'','2012-08-14','TEST 4',4,4,4);
-INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (1,'','2012-08-14','TEST 5',5,5,5);
-INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (2,'','2012-08-14','TEST 6',6,6,6);
-INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (3,'','2012-08-14','TEST 7',7,7,7);
-INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (3,'','2012-08-14','TEST 8',8,8,8);
-
 DROP VIEW IF EXISTS rnum_next; 
 CREATE VIEW rnum_next AS SELECT customer_id, (MAX(receipt_number)+1) AS receipt_next FROM receipts GROUP BY customer_id ORDER BY customer_id;
 
@@ -36,3 +28,17 @@ CREATE UNIQUE INDEX email_idx ON customers(email);
 
 DROP TABLE IF EXISTS cust_devices;
 CREATE TABLE cust_devices(id serial PRIMARY KEY, customer_id INT, udid VARCHAR(100));
+
+
+-- Insert test data
+INSERT INTO customers VALUES(1,'abc@def.com');
+INSERT INTO customers VALUES(2,'xyz@abc.com');
+INSERT INTO customers VALUES(3,'ccc@abc.com');
+
+INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (1,'','2012-08-14','TEST 1',1,1,1);
+INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (1,'','2012-08-14','TEST 2',2,2,2);
+INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (1,'','2012-08-14','TEST 4',4,4,4);
+INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (1,'','2012-08-14','TEST 5',5,5,5);
+INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (2,'','2012-08-14','TEST 6',6,6,6);
+INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (3,'','2012-08-14','TEST 7',7,7,7);
+INSERT INTO receipts (customer_id, image_name, entry_date, text, amount, account, offset_account) VALUES (3,'','2012-08-14','TEST 8',8,8,8);
