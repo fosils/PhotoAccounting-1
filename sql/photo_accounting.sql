@@ -18,7 +18,7 @@ CREATE TABLE receipts (	id SERIAL PRIMARY KEY,
 						offset_account INT, 
 						s3url VARCHAR(300), 
 						received_date TIMESTAMP,
-						deleted VARCHAR(1) DEFAULT '0');
+						deleted CHAR(1) DEFAULT '0');
 
 DROP VIEW IF EXISTS rnum_next; 
 CREATE VIEW rnum_next AS SELECT customer_id, (MAX(receipt_number)+1) AS receipt_next FROM receipts GROUP BY customer_id ORDER BY customer_id;
