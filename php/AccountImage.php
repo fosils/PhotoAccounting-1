@@ -57,7 +57,8 @@ class AccountImage{
 			$detail->vat_code = $row['vat_code'];
 			$detail->offset_account = $row['offset_account'];
 			$detail->image_name = $row['image_name'];
-			$detail->deleted = $row['deleted'];
+			if($row['deleted'] == 't') $detail->deleted=true;
+			else $detail->deleted = false;
 		}
 		echo json_encode($detail);		
 	}
@@ -208,9 +209,9 @@ class AccountImage{
 		$image_id = trim($imageID);
 		$deleted = trim($_POST['deleted']);
 	
-		// Check deleted field
-		if (!($deleted=='0' || $deleted=='1')) {
-			$errors['deleted'] = 'Deleted value must be 0 OR 1';
+		// Check if deleted field is not boolan type
+		if(!is_bool($deleted))  {
+			$errors['deleted'] = 'Deleted value must be boolean';
 		}
 	
 		// Init the returned object

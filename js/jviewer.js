@@ -147,7 +147,7 @@ JSViewer = function () {
             $('jsv_vat_code').value = obj.vat_code;
             $('jsv_offset_account').value = obj.offset_account;
             Y.one('#jsv_image_name').setHTML(obj.image_name);
-            if (obj.deleted=='0') {
+            if (!obj.deleted) {
           	  	Y.one('#image_deleted_info').setHTML('');
             } else {
             	Y.one('#image_deleted_info').setHTML('Deleted');
@@ -327,10 +327,9 @@ JSViewer = function () {
         // Update object in RAM
         obj = image_details[image_id];
         // image alredy marked as deleted so return;
-        if(obj.deleted==1) {
-        	obj.deleted=0;
-        	deleted=0;
-        } else deleted=1;
+        if(obj.deleted) {
+        	deleted=false;
+        } else deleted=true;
         // Update object in RAM
         obj.deleted=deleted;
         image_details[image_id] = obj;
@@ -350,7 +349,7 @@ JSViewer = function () {
             // Ajax lifecycle event handlers
             on: {
                 start: function (id) {
-                	if(deleted==0) log('mark image as undeleted ' + image_id + ' ...');
+                	if(!deleted) log('mark image as undeleted ' + image_id + ' ...');
                 	else  log('mark image as deleted ' + image_id + ' ...');
                     
 
@@ -360,7 +359,7 @@ JSViewer = function () {
                 },
                 complete: function (id, response) {
                    var jsonObject = Y.JSON.parse(response.responseText);
-                    if(deleted==0) {
+                    if(!deleted) {
                     	log(image_id + ' marked as undeleted'); 
                     	Y.one('#image_deleted_info').setHTML('');
                     }
