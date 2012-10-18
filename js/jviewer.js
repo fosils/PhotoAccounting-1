@@ -329,11 +329,16 @@ JSViewer = function () {
         // image alredy marked as deleted so return;
         if(obj.deleted) {
         	deleted=false;
-        } else deleted=true;
+        	Y.one('#image_deleted_info').setHTML('');
+        } else {
+        	deleted=true;
+        	Y.one('#image_deleted_info').setHTML('Deleted');
+        }
         // Update object in RAM
         obj.deleted=deleted;
         image_details[image_id] = obj;
-
+    	
+    	
         // Subscribe function 'onDbUpdateFailure' to "io.failure" i.e. timeout,
         // passing it Y & the affected image id when that happens
         Y.on('io:failure', onDbUpdateFailure, Y,
@@ -359,13 +364,13 @@ JSViewer = function () {
                 },
                 complete: function (id, response) {
                    var jsonObject = Y.JSON.parse(response.responseText);
+                   
                     if(!deleted) {
                     	log(image_id + ' marked as undeleted'); 
-                    	Y.one('#image_deleted_info').setHTML('');
+
                     }
                     else {
                     	log(image_id + ' marked as deleted'); 
-                    	Y.one('#image_deleted_info').setHTML('Deleted');
                     }
                     log(jsonObject);
 
