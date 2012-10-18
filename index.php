@@ -114,6 +114,7 @@ $accountImage->updateFileNames($files);
 	</div>
 	<div id="jsv_right">
 		<div id="flash_errors"></div>
+		<div id="image_deleted_info"></div>
 		<div id="jsv_form">
 			<ul>
 				<li><div id="jsv_image_name"></div></li>
