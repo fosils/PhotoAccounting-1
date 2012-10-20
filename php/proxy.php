@@ -20,4 +20,9 @@ switch($_REQUEST['function']){
 		$accoutImage = new AccountImage();
 		$accoutImage->markImageAsDeleted($_POST['image_id']);
 		break;
+	case 'set_hot_key':
+		require_once 'EconomicSoapClient.php';
+		$economic_client = new EconomicSoapClient();
+		$accounts = $economic_client->setHotKeys($_POST['id'], $_POST['hot_key']);
+		break;
 }
