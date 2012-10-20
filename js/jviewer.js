@@ -14,7 +14,7 @@ JSViewer = function () {
         // // START : image details
         image_details, image_errors, general_error, displayFlashError,
         restrict_db_update, onDbUpdateFailure,
-        loadImageDetail, populateImageDetail, saveImageDetail,markImageDeleted;
+        loadImageDetail, populateImageDetail, saveImageDetail,markImageDeleted,saveHotKey;
         // // END : image details
 
     images = {};
@@ -396,6 +396,61 @@ JSViewer = function () {
     };
 
     /**
+     * Save hotkey on database
+     *
+     * @param {Y} Yui3 object
+     * @param {current_image_index} The index of the current displayed image
+     * @return {null}
+     */
+    saveHotKey = function (Y, hot_key_id, hot_key) {
+
+
+        // Subscribe function 'onDbUpdateFailure' to "io.failure" i.e. timeout,
+        // passing it Y & the affected image id when that happens
+        Y.on('io:failure', onDbUpdateFailure, Y,
+            // 'Transaction Failed'
+            [Y, hot_key_id]
+        );
+       
+        Y.io("php/proxy.php?function=set_hot_key", {
+            // // this is a post
+            method: 'POST',
+            data : "id=" +  hot_key_id + "&hot_key=" + hot_key,
+            timeout : 3000,
+            // Ajax lifecycle event handlers
+            on: {
+                start: function (id) {
+                	log('saving hotkey ' + hot_key + ' to id '+hot_key_id);
+
+                },
+                complete: function (id, response) {
+                    //var jsonObject = Y.JSON.parse(response.responseText);
+                    log('saved hotkey ' + hot_key + ' to id '+hot_key_id);
+                    
+                    //log(jsonObject);
+/*
+                    if (jsonObject.status == 0) {
+                        hot_key_errors[hot_key_id] = jsonObject.errors;
+                    }
+
+                    if (jsonObject.status == 1) {
+                        // Remove its errors
+                        delete hot_key_errors[hot_key_id];
+                   }
+                   */
+
+                    // // Clear the general error as we can connect
+                    // // to the server just fine
+                    general_error = '';
+
+                    // // Update the flash_errors div to notify
+                    // // users that there is/are error(s)
+                    displayFlashError(Y);
+                }
+            }
+        });
+    };
+    /**
      * Handles storage of errors from timeouts arising from example
      * when the server is unreachable when saving an image's detail.
      *
@@ -562,11 +617,13 @@ JSViewer = function () {
                         return false;
                     } else if (e.target.getAttribute('id') == rows[i].children[3].children[0].getAttribute('id')) {
                         document.newHotkey = i;
+                        var keyId = rows[i].children[0].innerHTML;
                     }
                 }
                 document.getElementById(e.target.getAttribute('id')).setAttribute('data', e.keyCode);
                 document.getElementById(e.target.getAttribute('id')).parentNode.children[1].innerHTML = "";
                 document.getElementById(e.target.getAttribute('id')).value = "";
+                saveHotKey(Y,keyId,String.fromCharCode(e.keyCode).toLowerCase());
                 return true;
             }
 
