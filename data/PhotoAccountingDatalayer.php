@@ -64,6 +64,19 @@ class PhotoAccountingDatalayer extends PGDatalayer{
 	public function CDV_Get($device_id){
 		return $this->Exec("SELECT * FROM cust_devices WHERE udid=:device_id LIMIT 1", array(":device_id"=>$device_id));
 	}
+	
+	/**
+	 *  HotKeys
+	 */
+	public function HK_GetAll() {
+		return $this->Exec("SELECT * FROM hot_keys;");
+	}
+	public function HK_Create($id,$hot_key) {
+		return $this->Exec("INSERT INTO hot_keys(id, hot_key) VALUES(:id,:hot_key);",array(":id"=>$id, ":hot_key"=>$hot_key));
+	}
+	public function HK_Update($id,$hot_key) {
+		return $this->Exec("UPDATE hot_keys set hot_key=:hot_key WHERE id=:id RETURNING id;",array(":id"=>$id, ":hot_key"=>$hot_key));
+	}
 }
 
 function create_customer($email=null){
