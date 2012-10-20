@@ -30,6 +30,8 @@ CREATE UNIQUE INDEX email_idx ON customers(email);
 DROP TABLE IF EXISTS cust_devices;
 CREATE TABLE cust_devices(id serial PRIMARY KEY, customer_id INT, udid VARCHAR(100));
 
+DROP TABLE IF EXISTS hot_keys;
+CREATE TABLE hot_keys(id int PRIMARY KEY, hot_key char(1) UNIQUE);
 
 -- Insert test data
 INSERT INTO customers VALUES(1,'abc@def.com');
