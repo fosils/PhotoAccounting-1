@@ -7,10 +7,6 @@
 class EconomicSoapClient {
 	private static $client;
 	
-	function __construct() {
-		$this->connect();
-	}
-	
 	/**
 	 * Note: This might be helpfull: 
 	 * http://apiforum.e-conomic.com/soap-f8/economic-api-exceptions-authorizationexception-t4678.html
@@ -27,6 +23,7 @@ class EconomicSoapClient {
 	}
 	
 	public function getAccounts(){
+		$this->connect();
 		$accounts = array();
 		
 		try {
@@ -46,7 +43,40 @@ class EconomicSoapClient {
 		} catch (Exception $e) {
 			throw new Exception('Accounts could not be returned '. $e->getMessage());
 		}
-		
+		// load hotKeys from database. Number variable is primary key in hot_keys table
+		require_once "../data/PhotoAccountingDatalayer.php";
+		$db = new PhotoAccountingDatalayer();
+		$result=$db->HK_GetAll();
+		while ($row = pg_fetch_assoc($result)) {
+			foreach ( $accounts as $key=>$value){
+				// if number of account is this same as hotkey id add hotkey to response
+				if($value->Number==$row['id']) {
+					$value->hotkey=$row['hot_key'];
+					break;
+				}
+				
+			}
+		}		
 		echo json_encode($accounts);
+	}
+	
+	// persist hotkeys in database 
+	public function setHotKeys($id, $hot_key) {
+		require_once "../data/PhotoAccountingDatalayer.php";
+		$db = new PhotoAccountingDatalayer();
+		$result=$db->HK_Update($id, $hot_key);
+		if(pg_num_rows($result)==0){
+			$result=$db->HK_Create($id, $hot_key);
+		}
+		// Init the returned object
+		$detail = new stdClass;
+		$detail->status = 1;
+		if (!$result) {
+			$errors['common'] = pg_last_error();
+			$detail->status = 0;
+			$detail->errors = $errors;
+		}
+		// Print results in JSON
+		echo json_encode($detail);
 	}
 }
