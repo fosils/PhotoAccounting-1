@@ -8,7 +8,7 @@ JSViewer = function () {
     var my_key_codes, my_image_count, current_image_index,
         $, renderImage, showPrevImage, showNextImage,
         keyDownHandler, keyUpHandler, keyPressHandler, setKeyboardHandlers, isShiftPressed,isDeletePressed,
-        toggleArrows, addArrows,
+        toggleArrows, adjustArrowPosition, addArrows,
         loadImage, images,
         cacheGroup, log,
         // // START : image details
@@ -50,6 +50,9 @@ JSViewer = function () {
             throw "Invalid argument";
         }
 
+        Y.one('#arrow_left').setStyle('display', 'none');
+        Y.one('#arrow_right').setStyle('display', 'none');
+
         /*
         This sets the image src to the image data and reposition the image arrows,
         then focus on the account field
@@ -67,12 +70,6 @@ JSViewer = function () {
         image_detail = image_details[current_image_index + 1];
         populateImageDetail(Y, image_detail);
         // // END : image details
-
-        pos_top = Y.one('#jsv_image').get('height') - 200;
-
-        pos_top += 'px';
-        Y.one('#arrow_left').setStyle('bottom', pos_top);
-        Y.one('#arrow_right').setStyle('bottom', pos_top);
     };
 
     // // START : image details
@@ -305,7 +302,7 @@ JSViewer = function () {
 
         }
     };
-    
+
     /**
      * Requset to mark image as deleted on database
      *
@@ -337,8 +334,8 @@ JSViewer = function () {
         // Update object in RAM
         obj.deleted=deleted;
         image_details[image_id] = obj;
-    	
-    	
+
+
         // Subscribe function 'onDbUpdateFailure' to "io.failure" i.e. timeout,
         // passing it Y & the affected image id when that happens
         Y.on('io:failure', onDbUpdateFailure, Y,
@@ -356,7 +353,7 @@ JSViewer = function () {
                 start: function (id) {
                 	if(!deleted) log('mark image as undeleted ' + image_id + ' ...');
                 	else  log('mark image as deleted ' + image_id + ' ...');
-                    
+
 
                     // Prevent other threads from overwriting the user's
                     // typed in values while the request is in progress.
@@ -364,13 +361,13 @@ JSViewer = function () {
                 },
                 complete: function (id, response) {
                    var jsonObject = Y.JSON.parse(response.responseText);
-                   
+
                     if(!deleted) {
-                    	log(image_id + ' marked as undeleted'); 
+                    	log(image_id + ' marked as undeleted');
 
                     }
                     else {
-                    	log(image_id + ' marked as deleted'); 
+                    	log(image_id + ' marked as deleted');
                     }
                     log(jsonObject);
 
@@ -488,6 +485,8 @@ JSViewer = function () {
             }
 
             try {
+                Y.one('#arrow_left').setStyle('display', 'none');
+                Y.one('#arrow_right').setStyle('display', 'none');
                 renderImage(Y, images[current_image_index]);
             } catch (e) {
                 log(e);
@@ -520,6 +519,8 @@ JSViewer = function () {
 
             log('showNextImage : current_image_index = ' + current_image_index);
 
+            Y.one('#arrow_left').setStyle('display', 'none');
+            Y.one('#arrow_right').setStyle('display', 'none');
             renderImage(Y, images[current_image_index]);
 
             cacheGroup(Y, current_image_index, PRE_CACHE);
@@ -598,7 +599,7 @@ JSViewer = function () {
             case 81: //q (previous)
                 showPrevImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
                 document.hotkey = true;
-                break; 
+                break;
             case 16:// shift (if pressed then hotkey will clear vat_code field)
             	isShiftPressed=true;
             	break;
@@ -608,7 +609,7 @@ JSViewer = function () {
             		isDeletePressed=true;
 	                markImageDeleted(Y, current_image_index);
             	}
-                break; 
+                break;
             }
         };
     };
@@ -645,7 +646,7 @@ JSViewer = function () {
                     break;
                 }
             }
-            // set flag isDeletePressed to false 
+            // set flag isDeletePressed to false
             if ( e.keyCode == 46) {
             	isDeletePressed=false;
             	showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE)(e);
@@ -701,6 +702,33 @@ JSViewer = function () {
         };
     };
 
+
+
+    /**
+     * Adjust the arrow position according the actual image
+     *
+     * @param {Y} Yui3 object
+     * @return {null}
+     */
+    adjustArrowPosition = function(Y) {
+        return function (e) {
+            var imgHeight = parseInt(Y.one('#jsv_image').getStyle('height'));
+            var arrowHeight = parseInt(Y.one('#arrow_left').getStyle('height'));
+            var bottom = 0;
+
+            if (imgHeight != 'NaN' && imgHeight != 0 && arrowHeight != 'NaN' && arrowHeight != 0) {
+                bottom = (imgHeight - arrowHeight) / 2;
+            }
+
+            Y.one('#arrow_left').setStyle('left', 0);
+            Y.one('#arrow_left').setStyle('bottom', bottom);
+            Y.one('#arrow_left').setStyle('display', 'inline');
+            Y.one('#arrow_right').setStyle('right', 0);
+            Y.one('#arrow_right').setStyle('bottom', bottom);
+            Y.one('#arrow_right').setStyle('display', 'inline');
+        };
+    };
+
     /**
      * Add navigation arrows to the image
      *
@@ -733,10 +761,10 @@ JSViewer = function () {
 
         Y.one('#jsv_link').on('mouseover', toggleArrows(Y, true));
         Y.one('#jsv_link').on('mouseout', toggleArrows(Y, false));
+        Y.one('#jsv_image').on('mousemove', adjustArrowPosition(Y));
 
         Y.one(arrowRight).on('click', showNextImage(Y, total_number_images, POST_CACHE, PRE_CACHE));
         Y.one(arrowLeft).on('click', showPrevImage(Y, total_number_images, POST_CACHE, PRE_CACHE));
-
     };
 
     /**
