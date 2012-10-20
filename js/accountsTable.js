@@ -1,14 +1,23 @@
 YUI().use('datatable-scroll', "datasource-io", "datasource-jsonschema",
 		"datatable-datasource", function(Y) {
+	
+			// formatter to display cell as input field
+			var hotKeyFormatter = function(o) {  
+			    var hotkey = new String(o.data.hotkey);  
+			    var data = hotkey.toUpperCase().charCodeAt(0);
+			    if(o.data.hotkey) return "<input type='text' maxlength='1' size='1' class='hotkey-input'  value='"+hotkey+"' data='"+data+"'/><span class='field_error'></span>";
+			    else return;     
+			};
 			var columns = [ {
 					key : "Number",
 					label : "No."
 				},
 				'Name',
 				'VAT', {
-					key : "Hotkey",
+					key : "hotkey",
 					label : "HotKey",
 					allowHTML: true,
+					formatter: hotKeyFormatter,
 					emptyCellValue: "<input type='text' maxlength='1' size='1' class='hotkey-input'/><span class='field_error'></span>"
 				}
 			];
@@ -22,7 +31,8 @@ YUI().use('datatable-scroll', "datasource-io", "datasource-jsonschema",
 					resultFields : [ "Number", "Name", {
 						key : 'VAT',
 						locator : "VatAccountHandle.VatCode"
-					} ]
+					},
+					"hotkey" ]
 				}
 			});
 
